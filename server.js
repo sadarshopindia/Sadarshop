@@ -27,7 +27,7 @@ if (db.prepare('SELECT COUNT(*) c FROM categories').get().c === 0) {
 }
 
 const PORT = Number(process.env.PORT || 3000);
-const SITE_URL = (process.env.SITE_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://satnamthreads.com').replace(/\/$/, '');
 
 const router = new Router();
 
