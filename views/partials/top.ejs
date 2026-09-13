@@ -8,7 +8,7 @@
     <%= title ? title + ' · ' + S.site_name : S.site_name + ' — ' + S.tagline %>
   </title>
   <meta name="description"
-    content="<%= typeof metaDesc !== 'undefined' && metaDesc ? metaDesc : 'Satnam Threads supplies tagging guns, barbs, tags, labels, pins, eyebrow threading thread and packing consumables to garment exporters, salons and retailers across India. Wholesale since 1993.' %>">
+    content="<%= typeof metaDesc !== 'undefined' && metaDesc ? metaDesc : 'Satnam Threads supplies threads, zippers, elastics, buttons, and other related garment accessories to manufacturers, exporters, and resellers across India since 1993.' %>">
   <link rel="canonical" href="<%= SITE_URL + path %>">
   <meta property="og:site_name" content="<%= S.site_name %>">
   <meta property="og:title" content="<%= title || S.site_name %>">
@@ -18,10 +18,10 @@
   <link rel="stylesheet" href="/static/css/style.css?v=11">
   <style>
     :root {
-      --navy: <%= S.theme_color_primary || '#1D3159' %>;
-      --navy-2: <%= S.theme_color_primary || '#1D3159' %>;
-      --gold: <%= S.theme_color_secondary || '#B27A22' %>;
-      --gold-2: <%= S.theme_color_secondary || '#B27A22' %>;
+      --navy: <%=S.theme_color_primary || '#1D3159' %>;
+      --navy-2: <%=S.theme_color_primary || '#1D3159' %>;
+      --gold: <%=S.theme_color_secondary || '#B27A22' %>;
+      --gold-2: <%=S.theme_color_secondary || '#B27A22' %>;
     }
   </style>
   <script type="application/ld+json"><%- JSON.stringify({
@@ -34,15 +34,15 @@
 }) %></script>
   <%- typeof jsonld !=='undefined' && jsonld ? '<script type="application/ld+json">' +JSON.stringify(jsonld)+'</script>'
     : '' %>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDKH8MJF6B"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDKH8MJF6B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
 
-    gtag('config', 'G-LDKH8MJF6B');
-  </script>
+      gtag('config', 'G-LDKH8MJF6B');
+    </script>
 </head>
 
 <body>
@@ -77,12 +77,17 @@
         </svg>
       </button>
       <a class="logo" href="/" style="display:flex; align-items:center; gap:16px; text-decoration:none;">
-      <img src="<%= S.site_logo || '/static/img/brand/logo.jpg' %>" alt="<%= S.site_name %>" style="height: 64px; width: auto; object-fit: contain;">
-      <div style="display:flex; flex-direction:column; justify-content:center;">
-        <span style="font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1;">Satnam Threads</span>
-        <span style="font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Since 1993</span>
-      </div>
-    </a>
+        <img src="<%= S.site_logo || '/static/img/brand/logo.jpg' %>" alt="<%= S.site_name %>"
+          style="height: 64px; width: auto; object-fit: contain;">
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <span
+            style="font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1;">Satnam
+            Threads</span>
+          <span
+            style="font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Since
+            1993</span>
+        </div>
+      </a>
       <form class="searchbar" action="/products" method="get" role="search" style="position:relative">
         <input type="search" name="q" value="<%= query.q || '' %>"
           placeholder="Search tag guns, barbs, threading thread, labels…" aria-label="Search products"
@@ -223,19 +228,21 @@
             <% } %>
         </div>
       </div>
-      <% 
-        const hLinks = (S.menu_header || 'Shop all | /products\nWholesale | /wholesale\nAbout | /pages/about-us').split('\n').filter(l => l.trim()).map(l => {
-          const p = l.split('|'); return { name: p[0].trim(), url: p[1] ? p[1].trim() : '#' };
+      <% const hLinks=(S.menu_header || 'Shop all | /products\nWholesale | /wholesale\nAbout | /pages/about-us'
+        ).split('\n').filter(l=> l.trim()).map(l => {
+        const p = l.split('|'); return { name: p[0].trim(), url: p[1] ? p[1].trim() : '#' };
         });
-      %>
-      <% for(const l of hLinks){ %>
-        <a href="<%= l.url %>" class="<%= path===l.url ? 'active':'' %>"><%= l.name %></a>
-      <% } %>
-      <a class="spacer"
-        href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in."
-        style="background:#25D366; color:#fff; padding:6px 14px; border-radius:6px; font-weight:600; font-size:13px; align-self:center; border-bottom:none; text-decoration:none;">WhatsApp
-        us</a>
-      <% if(user && user.role==='admin' ){ %><a href="/admin" style="color:var(--gold)">Admin panel</a>
-        <% } %>
+        %>
+        <% for(const l of hLinks){ %>
+          <a href="<%= l.url %>" class="<%= path===l.url ? 'active':'' %>">
+            <%= l.name %>
+          </a>
+          <% } %>
+            <a class="spacer"
+              href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in."
+              style="background:#25D366; color:#fff; padding:6px 14px; border-radius:6px; font-weight:600; font-size:13px; align-self:center; border-bottom:none; text-decoration:none;">WhatsApp
+              us</a>
+            <% if(user && user.role==='admin' ){ %><a href="/admin" style="color:var(--gold)">Admin panel</a>
+              <% } %>
     </div>
   </nav>
