@@ -121,11 +121,11 @@ module.exports = function (r) {
     if (cat && cat.parent_id) cat = Object.assign({}, cat, { parent: db.prepare('SELECT * FROM categories WHERE id=?').get(cat.parent_id) });
     const related = p.category_id
       ? db.prepare(`SELECT p.*,c.name cat FROM products p LEFT JOIN categories c ON c.id=p.category_id
-          WHERE p.is_active=1 AND p.category_id=? AND p.id<>? ORDER BY RANDOM() LIMIT 4`).all(p.category_id, p.id)
+          WHERE p.is_active=1 AND p.parent_id IS NULL AND p.category_id=? AND p.id<>? ORDER BY RANDOM() LIMIT 4`).all(p.category_id, p.id)
       : [];
     const extra = related.length < 4
       ? db.prepare(`SELECT p.*,c.name cat FROM products p LEFT JOIN categories c ON c.id=p.category_id
-          WHERE p.is_active=1 AND p.id<>? ORDER BY p.is_featured DESC, RANDOM() LIMIT ?`).all(p.id, 4 - related.length)
+          WHERE p.is_active=1 AND p.parent_id IS NULL AND p.id<>? ORDER BY p.is_featured DESC, RANDOM() LIMIT ?`).all(p.id, 4 - related.length)
       : [];
     const images = H.json(p.images, []) || [];
     if (variants.length) {
