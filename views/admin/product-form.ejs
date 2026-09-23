@@ -113,7 +113,7 @@
       ]
     }
   });
-  document.querySelector('form').addEventListener('submit', function() {
+  document.getElementById('hidden_desc').form.addEventListener('submit', function() {
     var html = quill.root.innerHTML;
     if (html === '<p><br></p>' || html === '<p></p>') html = '';
     document.getElementById('hidden_desc').value = html;

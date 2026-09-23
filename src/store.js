@@ -90,12 +90,14 @@ function productsQuery(opts) {
   const searchRegexes = terms.map(term => new RegExp('(^|\\W)' + term, 'i'));
 
   let allRows = db.prepare(`SELECT p.*, c.name AS cat,
-    (SELECT images FROM products WHERE parent_id=p.id AND images!='[]' AND images!='' AND images IS NOT NULL LIMIT 1) as child_images
+    (SELECT images FROM products WHERE parent_id=p.id AND images!='[]' AND images!='' AND images IS NOT NULL LIMIT 1) as child_images,
+    (SELECT GROUP_CONCAT(name, ' ') FROM products WHERE parent_id=p.id) as child_names,
+    (SELECT GROUP_CONCAT(sku, ' ') FROM products WHERE parent_id=p.id) as child_skus
     FROM products p LEFT JOIN categories c ON c.id=p.category_id ${w}`).all(...args);
   allRows.forEach(r => { if (!r.images || r.images === '[]' || r.images === '') r.images = r.child_images || '[]'; });
 
   allRows = allRows.filter(p => {
-    const searchableText = [p.name, p.short_desc, p.description, p.cat].map(normalizeSize).join(' ');
+    const searchableText = [p.name, p.sku, p.short_desc, p.description, p.cat, p.child_names, p.child_skus].map(normalizeSize).join(' ');
     return searchRegexes.every(regex => regex.test(searchableText));
   });
 
