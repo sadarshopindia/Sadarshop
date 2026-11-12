@@ -154,8 +154,19 @@ function decorate(req, res) {
 }
 
 function serveStatic(req, res) {
-  if (req.method !== 'GET' || !req.pathname.startsWith('/static/')) return;
-  const rel = decodeURIComponent(req.pathname.slice('/static/'.length));
+  if (req.method !== 'GET') return;
+  let rel = null;
+  if (req.pathname.startsWith('/static/')) {
+    rel = decodeURIComponent(req.pathname.slice('/static/'.length));
+  } else if (
+    req.pathname.startsWith('/img/') ||
+    req.pathname.startsWith('/uploads/') ||
+    req.pathname.startsWith('/css/') ||
+    req.pathname.startsWith('/js/')
+  ) {
+    rel = decodeURIComponent(req.pathname.slice(1));
+  }
+  if (!rel) return;
   const file = path.join(PUBLIC, rel);
   if (!file.startsWith(PUBLIC) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return;
   const ext = path.extname(file).toLowerCase();

@@ -2,16 +2,9 @@
 <div class="wrap"><div class="auth-wrap auth-wide">
   <div class="card card-pad">
     <h1 style="font-size:26px">Create your account</h1>
-    <p class="muted">Retail accounts are active immediately. Wholesale accounts are approved within one business day and unlock slab pricing.</p>
+    <p class="muted">Accounts are active immediately.</p>
     <form method="post" action="/register">
-      <div class="field"><label>Account type</label>
-        <div class="choice">
-          <label><input type="radio" name="account_type" value="retail" <%= query.type!=='wholesale'?'checked':'' %>>
-            <div><b>Retail</b><span>Buy at listed prices, pay online, ship anywhere in India.</span></div></label>
-          <label><input type="radio" name="account_type" value="wholesale" <%= query.type==='wholesale'?'checked':'' %>>
-            <div><b>Wholesale / trade</b><span>Slab pricing, enquiry quotes, GST invoicing.</span></div></label>
-        </div>
-      </div>
+      <input type="hidden" name="account_type" value="retail">
       <div class="row">
         <div class="field"><label>Full name *</label><input class="input" name="name" required></div>
         <div class="field"><label>Phone / WhatsApp *</label><input class="input" name="phone" required placeholder="10-digit mobile"></div>
@@ -21,7 +14,7 @@
         <div class="field"><label>City *</label><input class="input" name="city" required></div>
       </div>
       <div class="row">
-        <div class="field"><label>Business name <span class="muted">— required for wholesale</span></label><input class="input" name="company"></div>
+        <div class="field"><label>Business name</label><input class="input" name="company"></div>
         <div class="field"><label>GSTIN <span class="muted">— speeds up approval</span></label><input class="input" name="gstin" placeholder="15 characters"></div>
       </div>
       <div class="row">

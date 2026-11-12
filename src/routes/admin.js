@@ -451,7 +451,7 @@ module.exports = function (r) {
 
   r.get('/admin/customers/:id/type/:type', (req, res) => {
     if (gate(req, res)) return;
-    const t = req.params.type === 'wholesale' ? 'wholesale' : 'retail';
+    const t = 'retail';
     db.prepare('UPDATE users SET account_type=?, status=? WHERE id=?').run(t, 'active', Number(req.params.id));
     req.flash('ok', 'Account converted to ' + t + ' with slab pricing active.');
     res.redirect(req.headers.referer || '/admin/customers');
@@ -486,7 +486,7 @@ module.exports = function (r) {
   r.get('/admin/subscribers/export', (req, res) => {
     if (gate(req, res)) return;
     const rows = db.prepare('SELECT email,created_at FROM subscribers ORDER BY id DESC').all();
-    res.set('Content-Disposition', 'attachment; filename="satnam-subscribers.csv"')
+    res.set('Content-Disposition', 'attachment; filename="subscribers.csv"')
       .send('email,subscribed_at\n' + rows.map(r2 => `${r2.email},${r2.created_at}`).join('\n'), 'text/csv; charset=utf-8');
   });
   r.get('/admin/subscribers/:id/delete', (req, res) => {
@@ -541,7 +541,7 @@ module.exports = function (r) {
       }
 
       const info = await transporter.sendMail({
-        from: '"Satnam Threads" <noreply@satnamthreads.com>',
+        from: '"' + S.site_name + '" <noreply@' + new URL(SITE_URL).hostname + '>',
         bcc: bccList,
         subject: subject,
         html: message,
@@ -630,7 +630,7 @@ module.exports = function (r) {
     const b = req.body;
     const keys = ['site_name', 'tagline', 'announcement', 'phone', 'whatsapp', 'email', 'address', 'hours',
       'gstin', 'home_hero_title', 'home_hero_sub', 'home_hero_kicker', 'home_stat1_title', 'home_stat1_text', 'home_stat2_title', 'home_stat2_text',
-      'theme_color_primary', 'theme_color_secondary', 'menu_header', 'menu_footer_company', 'social_instagram', 'social_facebook', 'social_linkedin', 'wholesale_content'];
+      'theme_color_primary', 'theme_color_secondary', 'menu_header', 'menu_footer_company', 'social_instagram', 'social_facebook', 'social_linkedin'];
     keys.forEach(k => { if (b[k] !== undefined) setting.set(k, b[k]); });
 
     if (req.files && req.files.site_logo) {

@@ -1,7 +1,7 @@
 {
-  "name": "satnam-threads",
+  "name": "sadarshop",
   "version": "1.0.0",
-  "description": "Satnam Threads — retail ecommerce + B2B wholesale enquiry platform for garment accessories. Zero dependencies.",
+  "description": "Sadarshop — retail ecommerce + B2B wholesale enquiry platform for fabrics & textiles.",
   "main": "server.js",
   "private": true,
   "scripts": {
@@ -10,9 +10,17 @@
     "reset": "node -e \"require('fs').rmSync('data',{recursive:true,force:true})\" && npm run seed",
     "images": "node --no-warnings src/gen-images.js",
     "preview": "node --no-warnings src/export-preview.js",
-    "reset-admin": "node reset-password.js"
+    "reset-admin": "node reset-password.js",
+    "package": "node scripts/make-zip.js"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "nodemailer": "^9.0.3"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.12.0"
+  },
+  "allowScripts": {
+    "puppeteer@25.12.0": true
   }
 }

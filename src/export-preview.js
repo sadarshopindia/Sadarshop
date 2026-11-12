@@ -6,7 +6,7 @@ const path = require('path');
 const http = require('http');
 
 const PORT = Number(process.env.PORT || 3000);
-const OUT = process.env.PREVIEW_DIR || path.join(__dirname, '..', '..', 'satnam-threads-preview');
+const OUT = process.env.PREVIEW_DIR || path.join(__dirname, '..', '..', 'sadarshop-preview');
 
 const req = (method, url, opts = {}) => new Promise((resolve) => {
   const body = opts.body || null;
@@ -64,7 +64,7 @@ function rewrite(html, known) {
   await req('GET', '/', { jar: trade });
   await req('POST', '/login', { jar: trade, body: 'email=buyer@example.com&password=demo1234' });
   await req('GET', '/', { jar: admin });
-  await req('POST', '/admin/login', { jar: admin, body: 'email=admin@satnamthreads.com&password=' + encodeURIComponent(process.env.ADMIN_PASSWORD || 'satnam@2026') });
+  await req('POST', '/admin/login', { jar: admin, body: 'email=admin@example.com&password=' + encodeURIComponent(process.env.ADMIN_PASSWORD || 'admin123') });
 
   const prods = ['griffin-eyebrow-threading-thread-pack-of-15-spools',
     'standard-tagging-gun-heavy-duty-steel-needle', 'standard-barbs-25-mm-5-000-pcs',

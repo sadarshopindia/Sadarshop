@@ -25,13 +25,7 @@
         <div class="field"><label>Company Name</label><input class="input" name="company" value="<%= c.company || '' %>"></div>
         <div class="field"><label>GSTIN</label><input class="input" name="gstin" value="<%= c.gstin || '' %>"></div>
         <div class="row">
-          <div class="field">
-            <label>Account Type</label>
-            <select class="input" name="account_type">
-              <option value="retail" <%= c.account_type === 'retail' ? 'selected' : '' %>>Retail</option>
-              <option value="wholesale" <%= c.account_type === 'wholesale' ? 'selected' : '' %>>Wholesale</option>
-            </select>
-          </div>
+          <input type="hidden" name="account_type" value="<%= c.account_type %>">
           <div class="field">
             <label>Status</label>
             <select class="input" name="status">

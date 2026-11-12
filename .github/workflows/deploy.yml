@@ -1,0 +1,25 @@
+name: Deploy Sadarshop to Namecheap
+
+on:
+  push:
+    branches:
+      - main   # change to "master" if that is your branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /home/satnqpja/sadarshop.com
+            git pull origin main
+            npm install --omit=dev
+            touch tmp/restart.txt
+            echo "✅ Sadarshop deployment complete"

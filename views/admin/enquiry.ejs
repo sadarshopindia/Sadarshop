@@ -43,8 +43,8 @@
         <% if(e.gstin){ %><br><span class="muted">GSTIN <%= e.gstin %></span><% } %>
       </p>
       <a class="btn btn-block btn-gold" style="margin-top:14px" target="_blank"
-         href="https://wa.me/91<%= String(e.phone).replace(/\D/g,'').slice(-10) %>?text=<%= encodeURIComponent('Hi '+e.name+', thanks for enquiry '+e.enquiry_no+' with Satnam Threads. Our quote:') %>">WhatsApp the quote</a>
-      <a class="btn btn-block btn-ghost" style="margin-top:8px" href="mailto:<%= e.email %>?subject=<%= encodeURIComponent('Quotation '+e.enquiry_no+' — Satnam Threads') %>">Email the quote</a>
+         href="https://wa.me/91<%= String(e.phone).replace(/\D/g,'').slice(-10) %>?text=<%= encodeURIComponent('Hi '+e.name+', thanks for enquiry '+e.enquiry_no+'. Our quote:') %>">WhatsApp the quote</a>
+      <a class="btn btn-block btn-ghost" style="margin-top:8px" href="mailto:<%= e.email %>?subject=<%= encodeURIComponent('Quotation '+e.enquiry_no) %>">Email the quote</a>
     </div>
     <div class="card card-pad" style="margin-top:16px">
       <h3>Summary</h3>

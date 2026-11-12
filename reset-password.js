@@ -1,8 +1,8 @@
 const { db } = require('./src/db');
 const { hashPassword } = require('./src/helpers');
 
-const email = 'admin@satnamthreads.com';
-const newPassword = 'satnam@2026';
+const email = 'admin@example.com';
+const newPassword = 'admin123';
 
 console.log(`Resetting password for ${email}...`);
 const user = db.prepare('SELECT id FROM users WHERE email=? AND role=?').get(email, 'admin');
@@ -17,11 +17,11 @@ if (!user) {
   } else {
     console.log('No admin user found at all! Creating one...');
     db.prepare('INSERT INTO users(name,email,phone,password_hash,role,account_type,company,status) VALUES(?,?,?,?,?,?,?,?)')
-      .run('Store Administrator', email, '8459455595', hashPassword(newPassword), 'admin', 'wholesale', 'Satnam Threads', 'active');
+      .run('Store Administrator', email, '9876543210', hashPassword(newPassword), 'admin', 'wholesale', 'Sadarshop', 'active');
     console.log(`\nSUCCESS: Created new admin: ${email} with password: ${newPassword}`);
   }
 } else {
-  db.prepare('UPDATE users SET password_hash=? WHERE id=?').run(hashPassword(newPassword), user.id);
+  db.prepare('UPDATE users SET password_hash=?, company=? WHERE id=?').run(hashPassword(newPassword), 'Sadarshop', user.id);
   console.log(`\nSUCCESS: Successfully reset password for ${email} to: ${newPassword}`);
 }
 

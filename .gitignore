@@ -1,6 +1,10 @@
-data/
+data/*.db-wal
+data/*.db-shm
+data/*.db-journal
 public/uploads/*
 !public/uploads/.gitkeep
 .env
 *.log
 node_modules/
+.DS_Store
+Thumbs.db

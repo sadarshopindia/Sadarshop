@@ -127,23 +127,33 @@ function run() {
   const cats = db.prepare('SELECT * FROM categories').all();
   cats.forEach((c, i) => {
     fs.writeFileSync(path.join(IMG, 'cat', c.slug + '.svg'),
-      svg(c.name, 'Satnam Threads', glyphFor(c.name, ''), i, 480, 480));
+      svg(c.name, 'Sadarshop', glyphFor(c.name, ''), i, 480, 480));
   });
   const prods = db.prepare(`SELECT p.*, c.name AS cat FROM products p LEFT JOIN categories c ON c.id=p.category_id`).all();
   prods.forEach((p, i) => {
     fs.writeFileSync(path.join(IMG, 'catalog', p.slug + '.svg'),
       svg(p.name.split('—')[0].trim(), p.pack_size || p.cat, glyphFor(p.name, p.cat || ''), i + 2));
   });
-  fs.writeFileSync(path.join(IMG, 'placeholder.svg'), svg('Satnam Threads', 'Image coming soon', 'box', 0));
-  fs.writeFileSync(path.join(IMG, 'brand', 'logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56">
-<g color="#C8892B" transform="translate(2 -72) scale(.62)">${G.spool}</g>
-<text x="72" y="27" font-family="Georgia,'Times New Roman',serif" font-size="25" font-weight="700" fill="#12203C" letter-spacing=".2">Satnam Threads</text>
-<text x="73" y="44" font-family="ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="10.5" fill="#6B7791" letter-spacing="1.7">GARMENT ACCESSORIES · SINCE 1993</text></svg>`);
-  fs.writeFileSync(path.join(IMG, 'brand', 'logo-light.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56">
-<g color="#E0A94A" transform="translate(2 -72) scale(.62)">${G.spool}</g>
-<text x="72" y="27" font-family="Georgia,'Times New Roman',serif" font-size="25" font-weight="700" fill="#FFFFFF" letter-spacing=".2">Satnam Threads</text>
-<text x="73" y="44" font-family="ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="10.5" fill="#A9B6CE" letter-spacing="1.7">GARMENT ACCESSORIES · SINCE 1993</text></svg>`);
-  fs.writeFileSync(path.join(IMG, 'favicon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" rx="42" fill="#12203C"/><g color="#E0A94A">${G.spool}</g></svg>`);
+  fs.writeFileSync(path.join(IMG, 'placeholder.svg'), svg('Sadarshop', 'Image coming soon', 'box', 0));
+  fs.writeFileSync(path.join(IMG, 'brand', 'logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 56" width="280" height="56">
+  <rect x="2" y="10" width="36" height="36" rx="8" fill="#BE3144"/>
+  <g stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 20L7 14h22l-2 6z"/>
+    <path d="M7 14v22a2 2 0 002 2h18a2 2 0 002-2V14"/>
+    <path d="M23 20a4 4 0 01-8 0"/>
+  </g>
+  <text x="48" y="30" font-family="Georgia,'Times New Roman',serif" font-size="24" font-weight="700" fill="#1a1a2e" letter-spacing="0.3">Sadarshop</text>
+  <text x="49" y="46" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="10" fill="#6B7791" letter-spacing="1.8">WHOLESALE FABRICS &amp; TEXTILES</text></svg>`);
+  fs.writeFileSync(path.join(IMG, 'brand', 'logo-light.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 56" width="280" height="56">
+  <rect x="2" y="10" width="36" height="36" rx="8" fill="#BE3144"/>
+  <g stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 20L7 14h22l-2 6z"/>
+    <path d="M7 14v22a2 2 0 002 2h18a2 2 0 002-2V14"/>
+    <path d="M23 20a4 4 0 01-8 0"/>
+  </g>
+  <text x="48" y="30" font-family="Georgia,'Times New Roman',serif" font-size="24" font-weight="700" fill="#ffffff" letter-spacing="0.3">Sadarshop</text>
+  <text x="49" y="46" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)" letter-spacing="1.8">WHOLESALE FABRICS &amp; TEXTILES</text></svg>`);
+  fs.writeFileSync(path.join(IMG, 'favicon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" rx="42" fill="#BE3144"/><g stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(30, 20) scale(3.5)"><path d="M9 20L7 14h22l-2 6z"/><path d="M7 14v22a2 2 0 002 2h18a2 2 0 002-2V14"/><path d="M23 20a4 4 0 01-8 0"/></g></svg>`);
 
   // hero + promo artwork
   fs.writeFileSync(path.join(IMG, 'hero.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" width="760" height="560">

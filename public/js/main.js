@@ -1,4 +1,4 @@
-/* Satnam Threads — storefront behaviour. No dependencies. */
+/* Sadarshop — storefront behaviour. No dependencies. */
 (function () {
   'use strict';
 
@@ -21,21 +21,21 @@
   };
 
   /* pcard carousel navigation */
-  window.navPcard = function(id, dir) {
+  window.navPcard = function (id, dir) {
     var car = document.getElementById('pcard-car-' + id);
     if (!car) return;
     var maxScroll = car.scrollWidth - car.clientWidth;
     if (dir === 1) {
       if (car.scrollLeft >= maxScroll - 10) {
-        car.scrollTo({left: 0, behavior: 'smooth'});
+        car.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        car.scrollBy({left: car.clientWidth, behavior: 'smooth'});
+        car.scrollBy({ left: car.clientWidth, behavior: 'smooth' });
       }
     } else {
       if (car.scrollLeft <= 10) {
-        car.scrollTo({left: maxScroll, behavior: 'smooth'});
+        car.scrollTo({ left: maxScroll, behavior: 'smooth' });
       } else {
-        car.scrollBy({left: -car.clientWidth, behavior: 'smooth'});
+        car.scrollBy({ left: -car.clientWidth, behavior: 'smooth' });
       }
     }
   };
@@ -63,6 +63,42 @@
         document.querySelectorAll('a[href="/wishlist"] .count').forEach(function (c) { c.textContent = d.count; });
         toast(d.saved ? 'Saved to your wishlist' : 'Removed from wishlist');
       }).catch(function () { toast('Could not update the wishlist', 'err'); });
+    });
+  });
+
+  /* ---- AJAX add-to-enquiry (no page redirect) ---- */
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || form.getAttribute('action') !== '/enquiry/add') return;
+    e.preventDefault();
+
+    var btn = form.querySelector('[type=submit]');
+    if (btn) { btn.disabled = true; }
+
+    var body = new URLSearchParams(new FormData(form)).toString();
+    fetch('/enquiry/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: body
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d.ok) {
+        /* update every enquiry badge on the page */
+        document.querySelectorAll('a[href="/enquiry"] .count').forEach(function (c) {
+          c.textContent = d.count;
+        });
+        toast('Added to enquiry list ✓');
+      } else {
+        toast('Could not add item', 'err');
+      }
+    })
+    .catch(function () { toast('Could not add item', 'err'); })
+    .finally(function () {
+      if (btn) { btn.disabled = false; }
     });
   });
 

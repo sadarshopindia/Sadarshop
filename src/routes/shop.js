@@ -45,7 +45,7 @@ module.exports = function (r) {
 
     res.render('shop/products', {
       title: cat ? cat.name : (q.q ? 'Search: ' + q.q : 'All products'),
-      metaDesc: cat ? cat.description : 'Browse the full Satnam Threads catalogue — tagging guns, barbs, tags, labels, pins, threading thread and packing consumables. Wholesale and retail.',
+      metaDesc: cat ? cat.description : 'Browse the full catalogue.',
       cat: cat ? Object.assign({}, cat, { parent }) : null,
       heading: cat ? cat.name : (q.q ? `Results for “${q.q}”` : 'The full catalogue'),
       subheading: cat ? (cat.description || '') : (q.q ? 'Matching products from across the catalogue.' : 'Everything we stock, from tagging guns to organza pouches.'),
@@ -64,7 +64,13 @@ module.exports = function (r) {
   r.get('/api/search', (req, res) => {
     const q = req.query.q;
     if (!q) return res.json({ results: [] });
-    const result = ST.productsQuery({ q, limit: 12, offset: 0 });
+    const catSlug = req.query.c || '';
+    let catId = null;
+    if (catSlug) {
+      const cat = db.prepare('SELECT id FROM categories WHERE slug=? AND is_active=1').get(catSlug);
+      if (cat) catId = cat.id;
+    }
+    const result = ST.productsQuery({ q, catId, limit: 12, offset: 0 });
     const suggestions = result.rows.map(p => {
       let img = '/static/img/placeholder.svg';
       try { const imgs = JSON.parse(p.images); if(imgs.length) img = imgs[0]; } catch(e){}
@@ -94,8 +100,8 @@ module.exports = function (r) {
     const fs = require('fs');
     const path = require('path');
     const os = require('os');
-    const preferred = process.env.DB_FILE || path.join(__dirname, '..', 'data', 'satnam.db');
-    const fallback = path.join(os.tmpdir(), 'satnam-threads', 'satnam.db');
+    const preferred = process.env.DB_FILE || (fs.existsSync(path.join(__dirname, '..', 'data', 'sadarshop.db')) ? path.join(__dirname, '..', 'data', 'sadarshop.db') : path.join(__dirname, '..', 'data', 'satnam.db'));
+    const fallback = path.join(os.tmpdir(), 'sadarshop', path.basename(preferred));
     try {
       if (fs.existsSync(preferred)) {
         fs.copyFileSync(preferred, fallback);
@@ -142,10 +148,74 @@ module.exports = function (r) {
       jsonld: {
         '@context': 'https://schema.org', '@type': 'Product', name: p.name, sku: p.sku,
         description: p.short_desc, image: res.locals.SITE_URL + (images[0] || ''),
-        brand: { '@type': 'Brand', name: 'Satnam Threads' },
+        brand: { '@type': 'Brand', name: res.locals.S.site_name || 'Sadarshop' },
         aggregateRating: p.review_count ? { '@type': 'AggregateRating', ratingValue: p.rating, reviewCount: p.review_count } : undefined
       }
     });
+  });
+
+  /* ---------------- enquiry ---------------- */
+  r.get('/enquiry', (req, res) => {
+    const items = ST.cartRows(res.locals.token, 'enquiry', res.locals.user);
+    const totalQty = items.reduce((sum, it) => sum + it.qty, 0);
+    res.render('shop/enquiry', { title: 'Enquiry list', items, totalQty });
+  });
+
+  r.post('/enquiry/add', (req, res) => {
+    const id = Number(req.body.id);
+    const qty = Math.max(1, Number(req.body.qty) || 1);
+    const tk = res.locals.token;
+    if (id) {
+      const has = db.prepare('SELECT id, qty FROM cart_items WHERE token=? AND kind=? AND product_id=?').get(tk, 'enquiry', id);
+      if (has) db.prepare('UPDATE cart_items SET qty=? WHERE id=?').run(has.qty + qty, has.id);
+      else try { db.prepare('INSERT INTO cart_items(token,kind,product_id,qty) VALUES(?,?,?,?)').run(tk, 'enquiry', id, qty); } catch(e) { console.error(e); }
+    }
+    const isAjax = req.headers['x-requested-with'] === 'XMLHttpRequest';
+    if (isAjax) {
+      const count = db.prepare('SELECT SUM(qty) s FROM cart_items WHERE token=? AND kind=?').get(tk, 'enquiry').s || 0;
+      return res.json({ ok: true, count });
+    }
+    req.flash('ok', 'Item added to enquiry list.');
+    res.redirect('back');
+  });
+
+  r.post('/enquiry/update', (req, res) => {
+    const id = Number(req.body.id);
+    const qty = Math.max(1, Number(req.body.qty) || 1);
+    const tk = res.locals.token;
+    const has = db.prepare('SELECT id FROM cart_items WHERE token=? AND kind=? AND product_id=?').get(tk, 'enquiry', id);
+    if (has) db.prepare('UPDATE cart_items SET qty=? WHERE id=?').run(qty, has.id);
+    res.redirect('/enquiry');
+  });
+
+  r.post('/enquiry/remove', (req, res) => {
+    const id = Number(req.body.id);
+    const tk = res.locals.token;
+    const has = db.prepare('SELECT id FROM cart_items WHERE token=? AND kind=? AND product_id=?').get(tk, 'enquiry', id);
+    if (has) db.prepare('DELETE FROM cart_items WHERE id=?').run(has.id);
+    req.flash('ok', 'Item removed.');
+    res.redirect('/enquiry');
+  });
+
+  r.post('/enquiry/submit', (req, res) => {
+    const b = req.body;
+    const tk = res.locals.token;
+    const items = ST.cartRows(tk, 'enquiry');
+    if (!items.length) return res.redirect('/enquiry');
+
+    const eNo = 'ENQ-' + Date.now().toString().slice(-6) + Math.floor(Math.random()*100);
+    const uId = res.locals.user ? res.locals.user.id : null;
+    
+    db.prepare(`INSERT INTO enquiries(enquiry_no, user_id, name, email, phone, company, gstin, city, message)
+      VALUES(?,?,?,?,?,?,?,?,?)`).run(eNo, uId, b.name, b.email, b.phone, b.company||'', b.gstin||'', b.city, b.message||'');
+    const eId = db.prepare('SELECT last_insert_rowid() id').get().id;
+    
+    const ins = db.prepare('INSERT INTO enquiry_items(enquiry_id, product_id, sku, name, qty, list_price) VALUES(?,?,?,?,?,?)');
+    for (const it of items) ins.run(eId, it.id, it.sku, it.name, it.qty, it.price);
+    
+    db.prepare('DELETE FROM cart_items WHERE token=? AND kind=?').run(tk, 'enquiry');
+    req.flash('ok', 'Enquiry submitted! Your reference is ' + eNo);
+    res.redirect('/');
   });
 
   /* ---------------- static content ---------------- */
@@ -155,13 +225,10 @@ module.exports = function (r) {
     res.render('shop/page', { title: pg.title, pg, metaDesc: String(pg.body).replace(/<[^>]+>/g, ' ').slice(0, 155) });
   });
 
-  r.get('/wholesale', (req, res) => res.render('shop/wholesale', {
-    title: 'Wholesale programme',
-    metaDesc: 'Open a Satnam Threads wholesale account for quantity slab pricing, quoted enquiries and GST invoicing. Approval in one business day.'
-  }));
+
 
   r.get('/contact', (req, res) => res.render('shop/contact', {
-    title: 'Contact us', metaDesc: 'Call or WhatsApp Satnam Threads on +91 84594 55595, Janakpuri, New Delhi. We reply within one business day.'
+    title: 'Contact us', metaDesc: 'Call or WhatsApp us. We reply within one business day.'
   }));
 
   r.post('/contact', (req, res) => {
@@ -207,7 +274,7 @@ module.exports = function (r) {
 
   r.get('/sitemap.xml', (req, res) => {
     const base = res.locals.SITE_URL;
-    const urls = ['/', '/products', '/wholesale', '/contact'];
+    const urls = ['/', '/products', '/contact'];
     db.prepare('SELECT slug FROM categories WHERE is_active=1').all().forEach(c => urls.push('/c/' + c.slug));
     db.prepare('SELECT slug FROM products WHERE is_active=1').all().forEach(p => urls.push('/p/' + p.slug));
     db.prepare('SELECT slug FROM pages WHERE is_active=1').all().forEach(p => urls.push('/pages/' + p.slug));

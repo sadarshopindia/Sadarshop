@@ -1,101 +1,243 @@
 <%- include('partials/top') %>
-<div class="wrap">
-  <div class="breadcrumb"><a href="/">Home</a> › <% if(cat){ %><% if(cat.parent){ %><a href="/c/<%= cat.parent.slug %>"><%= cat.parent.name %></a> › <% } %><span><%= cat.name %></span><% } else { %><span><%= query.q ? 'Search results' : 'All products' %></span><% } %></div>
-  <% if(cat && cat.image){ %>
-    <div style="width:100%; border-radius:12px; margin-bottom:24px; overflow:hidden;">
-      <img src="<%= cat.image %>" alt="<%= cat.name %>" style="width:100%; aspect-ratio: 21/7; max-height:360px; object-fit:cover; object-position:center; display:block;">
-    </div>
-  <% } %>
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px">
-    <div>
-      <h1 style="margin-bottom:6px"><%= heading %></h1>
-      <p class="muted" style="margin:0"><%= subheading %></p>
-    </div>
-    <button class="btn btn-ghost btn-sm" style="display:none" id="filterToggle" onclick="document.querySelector('.filters').classList.toggle('open')">Filters</button>
+
+<div class="wrap" style="padding-top:0;">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="/">Home</a> ›
+    <% if(cat){ %>
+      <% if(cat.parent){ %><a href="/c/<%= cat.parent.slug %>"><%= cat.parent.name %></a> › <% } %>
+      <span><%= cat.name %></span>
+    <% } else { %>
+      <span><%= query.q ? 'Search: "' + query.q + '"' : 'All Products' %></span>
+    <% } %>
   </div>
 
-  <div class="shop">
-    <aside class="filters card card-pad">
-      <form id="filterForm" method="get" action="<%= cat ? '/c/'+cat.slug : '/products' %>">
-        <% if(query.q){ %><input type="hidden" name="q" value="<%= query.q %>"><% } %>
-        <div class="fgroup">
-          <h5>Categories</h5>
-          <ul>
-            <li><a href="/products<%= query.q?'?q='+encodeURIComponent(query.q):'' %>" class="<%= !cat?'on':'' %>">All products <span class="muted"><%= totalAll %></span></a></li>
-            <% for(const g of tree){ %>
-              <li><a href="/c/<%= g.slug %>" class="<%= cat && cat.id===g.id?'on':'' %>" style="font-weight:600;margin-top:6px"><%= g.name %> <span class="muted"><%= g.n %></span></a></li>
+  <!-- Category banner image -->
+  <% if(cat && cat.image){ %>
+    <div style="width:100%;border-radius:var(--r-xl);margin-bottom:24px;overflow:hidden;border:1px solid var(--border);position:relative;">
+      <img src="<%= cat.image %>" alt="<%= cat.name %>" style="width:100%;aspect-ratio:21/6;max-height:300px;object-fit:cover;object-position:center;display:block;">
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,11,15,.7) 0%,transparent 60%);display:flex;align-items:center;padding:0 36px;">
+        <div>
+          <h1 style="color:#fff;margin-bottom:6px;"><%= heading %></h1>
+          <p style="color:rgba(255,255,255,.65);margin:0;font-size:14px;"><%= subheading %></p>
+        </div>
+      </div>
+    </div>
+  <% } else { %>
+    <div style="padding:24px 0 18px;">
+      <h1 style="margin-bottom:5px;"><%= heading %></h1>
+      <p style="color:var(--text-3);margin:0;font-size:14px;"><%= subheading %></p>
+    </div>
+  <% } %>
+
+  <!-- Mobile filter toggle -->
+  <button class="btn btn-ghost btn-sm" id="filterToggle" style="display:none;margin-bottom:16px;"
+    onclick="document.querySelector('.filters').classList.toggle('open')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+    Filters
+  </button>
+
+  <!-- Main 2-col layout -->
+  <div class="shop" style="padding-bottom:64px;">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="filters" style="position:sticky;top:88px;">
+
+      <!-- Category list -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);">Categories</span>
+        </div>
+
+        <div style="padding:8px 0;">
+          <!-- All products -->
+          <a href="/products<%= query.q?'?q='+encodeURIComponent(query.q):'' %>"
+             style="display:flex;align-items:center;justify-content:space-between;padding:9px 20px;font-size:13.5px;font-weight:<%= !cat ? '700' : '500' %>;color:<%= !cat ? 'var(--accent)' : 'var(--text-2)' %>;text-decoration:none;transition:all .15s;border-left:3px solid <%= !cat ? 'var(--accent)' : 'transparent' %>;">
+            <span>All products</span>
+            <span style="font-size:12px;color:var(--text-3);font-weight:500;background:var(--bg-3);padding:2px 8px;border-radius:99px;"><%= totalAll %></span>
+          </a>
+
+          <!-- Parent categories + children -->
+          <% for(const g of tree){ %>
+            <%
+              const parentActive = cat && (cat.id === g.id || (cat.parent && cat.parent.id === g.id));
+            %>
+            <a href="/c/<%= g.slug %>"
+               style="display:flex;align-items:center;justify-content:space-between;padding:9px 20px;font-size:13.5px;font-weight:<%= parentActive && cat.id === g.id ? '700' : '600' %>;color:<%= parentActive && cat.id === g.id ? 'var(--accent)' : 'var(--text-2)' %>;text-decoration:none;transition:all .15s;border-left:3px solid <%= parentActive && cat.id === g.id ? 'var(--accent)' : 'transparent' %>;margin-top:4px;">
+              <span><%= g.name %></span>
+              <span style="font-size:12px;color:var(--text-3);font-weight:500;background:var(--bg-3);padding:2px 8px;border-radius:99px;"><%= g.n %></span>
+            </a>
+
+            <!-- Subcategories — show only when parent is active -->
+            <% if(parentActive && g.children && g.children.length){ %>
               <% for(const c of g.children){ %>
-                <li><a href="/c/<%= c.slug %>" class="<%= cat && cat.id===c.id?'on':'' %>" style="padding-left:12px">— <%= c.name %> <span class="muted"><%= c.n %></span></a></li>
+                <a href="/c/<%= c.slug %>"
+                   style="display:flex;align-items:center;justify-content:space-between;padding:7px 20px 7px 34px;font-size:13px;font-weight:<%= cat && cat.id === c.id ? '700' : '500' %>;color:<%= cat && cat.id === c.id ? 'var(--accent)' : 'var(--text-3)' %>;text-decoration:none;transition:all .15s;border-left:3px solid <%= cat && cat.id === c.id ? 'var(--accent)' : 'transparent' %>;">
+                  <span style="display:flex;align-items:center;gap:7px;">
+                    <span style="width:4px;height:4px;border-radius:50%;background:<%= cat && cat.id === c.id ? 'var(--accent)' : 'var(--border)' %>;flex-shrink:0;display:inline-block;"></span>
+                    <%= c.name %>
+                  </span>
+                  <span style="font-size:11.5px;color:var(--text-3);"><%= c.n %></span>
+                </a>
               <% } %>
             <% } %>
-          </ul>
-        </div>
-
-        <div class="fgroup">
-          <h5>Availability</h5>
-          <label><input type="checkbox" name="instock" value="1" <%= query.instock?'checked':'' %>> In stock now</label>
-
-          <label><input type="checkbox" name="new" value="1" <%= query.new?'checked':'' %>> New arrivals</label>
-        </div>
-        <div class="fgroup">
-          <h5>Pack weight</h5>
-          <% for(const w of [['0-250','Up to 250 g'],['250-600','250 g – 600 g'],['600-1000','600 g – 1 kg'],['1000-99999','Over 1 kg']]){ %>
-            <label><input type="radio" name="wt" value="<%= w[0] %>" <%= query.wt===w[0]?'checked':'' %>> <%= w[1] %></label>
           <% } %>
         </div>
-        <div style="display:flex;gap:8px;padding-top:16px">
-          <button class="btn btn-block btn-sm" type="submit">Apply filters</button>
-          <a class="btn btn-ghost btn-sm" href="<%= cat ? '/c/'+cat.slug : '/products' %>">Clear</a>
+      </div>
+
+      <!-- Filters form -->
+      <form id="filterForm" method="get" action="<%= cat ? '/c/'+cat.slug : '/products' %>" style="margin-top:14px;">
+        <% if(query.q){ %><input type="hidden" name="q" value="<%= query.q %>"><% } %>
+
+        <!-- Availability -->
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:12px;">
+          <div style="padding:12px 20px;border-bottom:1px solid var(--border);">
+            <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);">Availability</span>
+          </div>
+          <div style="padding:12px 20px;display:flex;flex-direction:column;gap:10px;">
+            <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--text-2);cursor:pointer;">
+              <input type="checkbox" name="instock" value="1" <%= query.instock?'checked':'' %> style="accent-color:var(--accent);width:15px;height:15px;border-radius:4px;"> In stock now
+            </label>
+            <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--text-2);cursor:pointer;">
+              <input type="checkbox" name="new" value="1" <%= query.new?'checked':'' %> style="accent-color:var(--accent);width:15px;height:15px;border-radius:4px;"> New arrivals
+            </label>
+          </div>
+        </div>
+
+        <!-- Pack weight -->
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:12px;">
+          <div style="padding:12px 20px;border-bottom:1px solid var(--border);">
+            <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);">Pack Weight</span>
+          </div>
+          <div style="padding:12px 20px;display:flex;flex-direction:column;gap:8px;">
+            <% for(const w of [['0-250','Up to 250 g'],['250-600','250 g – 600 g'],['600-1000','600 g – 1 kg'],['1000-99999','Over 1 kg']]){ %>
+              <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:<%= query.wt===w[0] ? 'var(--text)' : 'var(--text-2)' %>;cursor:pointer;font-weight:<%= query.wt===w[0] ? '600' : '400' %>;">
+                <input type="radio" name="wt" value="<%= w[0] %>" <%= query.wt===w[0]?'checked':'' %> style="accent-color:var(--accent);width:15px;height:15px;"> <%= w[1] %>
+              </label>
+            <% } %>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-block btn-sm" type="submit">Apply</button>
+          <a class="btn btn-ghost btn-sm" href="<%= cat ? '/c/'+cat.slug : '/products' %>" style="flex:1;text-align:center;">Clear</a>
         </div>
       </form>
     </aside>
 
+    <!-- ── PRODUCT AREA ── -->
     <div id="results-container">
-      <div class="toolbar">
-        <span><b><%= pg.total %></b> product<%= pg.total===1?'':'s' %><%= query.q ? ' matching “'+query.q+'”' : '' %></span>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <label class="muted" style="font-size:13px">Sort
-            <select class="input" style="width:auto;display:inline-block;padding:6px 10px" onchange="location.href=updateQuery('sort',this.value)">
-              <% for(const s of [['relevance','Most relevant'],['popular','Best selling'],['newest','Newest first'],['name_asc','Name: A–Z']]){ %>
+
+      <!-- Toolbar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:20px;">
+        <span style="font-size:14px;color:var(--text-2);">
+          <b style="color:var(--text);font-family:var(--serif);font-size:17px;"><%= pg.total %></b>
+          product<%= pg.total===1?'':'s' %><%= query.q ? ' for "'+query.q+'"' : '' %>
+        </span>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <!-- Grid toggle -->
+          <div style="display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+            <button id="gridBtn4" onclick="setGrid(4)" title="4 columns" style="padding:6px 9px;border:none;background:var(--bg-card);color:var(--text-3);cursor:pointer;transition:all .15s;display:flex;align-items:center;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="4" height="4" rx=".5"/><rect x="10" y="3" width="4" height="4" rx=".5"/><rect x="17" y="3" width="4" height="4" rx=".5"/><rect x="3" y="10" width="4" height="4" rx=".5"/><rect x="10" y="10" width="4" height="4" rx=".5"/><rect x="17" y="10" width="4" height="4" rx=".5"/><rect x="3" y="17" width="4" height="4" rx=".5"/><rect x="10" y="17" width="4" height="4" rx=".5"/><rect x="17" y="17" width="4" height="4" rx=".5"/></svg>
+            </button>
+            <button id="gridBtn3" onclick="setGrid(3)" title="3 columns" style="padding:6px 9px;border:none;border-left:1px solid var(--border);background:var(--accent-glow-sm);color:var(--accent);cursor:pointer;transition:all .15s;display:flex;align-items:center;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="5" height="5" rx=".5"/><rect x="10" y="3" width="5" height="5" rx=".5"/><rect x="17" y="3" width="5" height="5" rx=".5"/><rect x="3" y="10" width="5" height="5" rx=".5"/><rect x="10" y="10" width="5" height="5" rx=".5"/><rect x="17" y="10" width="5" height="5" rx=".5"/></svg>
+            </button>
+            <button id="gridBtn2" onclick="setGrid(2)" title="2 columns" style="padding:6px 9px;border:none;border-left:1px solid var(--border);background:var(--bg-card);color:var(--text-3);cursor:pointer;transition:all .15s;display:flex;align-items:center;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+            </button>
+          </div>
+
+          <label style="font-size:13px;color:var(--text-3);display:flex;align-items:center;gap:6px;">
+            Sort
+            <select class="input" style="width:auto;padding:5px 10px;font-size:13px;" onchange="location.href=updateQuery('sort',this.value)">
+              <% for(const s of [['relevance','Most relevant'],['popular','Best selling'],['newest','Newest first'],['name_asc','A–Z']]){ %>
                 <option value="<%= s[0] %>" <%= (query.sort||'relevance')===s[0]?'selected':'' %>><%= s[1] %></option>
               <% } %>
             </select>
           </label>
-          <label class="muted" style="font-size:13px">Show
-            <select class="input" style="width:auto;display:inline-block;padding:6px 10px" onchange="location.href=updateQuery('per',this.value)">
-              <% for(const n of [12,24,48]){ %><option value="<%= n %>" <%= pg.per===n?'selected':'' %>><%= n %></option><% } %>
+
+          <label style="font-size:13px;color:var(--text-3);display:flex;align-items:center;gap:6px;">
+            Show
+            <select class="input" style="width:auto;padding:5px 10px;font-size:13px;" onchange="location.href=updateQuery('per',this.value)">
+              <% for(const n of [24,48,96]){ %><option value="<%= n %>" <%= pg.per===n?'selected':'' %>><%= n %></option><% } %>
             </select>
           </label>
         </div>
       </div>
 
+      <!-- Empty state -->
       <% if(!products.length){ %>
-        <div class="card empty">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>
-          <h3>Nothing matched that</h3>
-          <p>Try a broader search, or clear the filters. If you know the product but cannot find it here, WhatsApp us — we stock more than we list.</p>
-          <a class="btn" href="https://wa.me/<%= S.whatsapp %>">Ask us on WhatsApp</a>
+        <div class="card" style="text-align:center;padding:64px 20px;">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 18px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>
+          </div>
+          <h3 style="margin-bottom:8px;">Nothing matched</h3>
+          <p style="color:var(--text-3);max-width:38ch;margin:0 auto 22px;">Try a broader search or clear filters. WhatsApp us — we stock more than we list online.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <a class="btn btn-ghost" href="<%= cat ? '/c/'+cat.slug : '/products' %>">Clear filters</a>
+            <a class="btn" href="https://wa.me/<%= S.whatsapp %>">Ask on WhatsApp</a>
+          </div>
         </div>
       <% } else { %>
-        <div class="grid g3"><% for(const p of products){ %><%- include('partials/pcard',{p}) %><% } %></div>
+        <div id="productsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+          <% for(const p of products){ %><%- include('partials/pcard',{p}) %><% } %>
+        </div>
+
+        <!-- Pagination -->
         <% if(pg.pages>1){ %>
         <div class="pager">
           <% if(pg.hasPrev){ %><a href="<%= pageUrl(pg.page-1) %>">‹ Prev</a><% } %>
           <% for(let i=1;i<=pg.pages;i++){ if(i===1||i===pg.pages||Math.abs(i-pg.page)<=2){ %>
             <% if(i===pg.page){ %><span class="on"><%= i %></span><% } else { %><a href="<%= pageUrl(i) %>"><%= i %></a><% } %>
-          <% } else if(Math.abs(i-pg.page)===3){ %><span style="border:0;background:none">…</span><% } } %>
+          <% } else if(Math.abs(i-pg.page)===3){ %><span style="border:0;background:none;color:var(--text-3);">…</span><% } } %>
           <% if(pg.hasNext){ %><a href="<%= pageUrl(pg.page+1) %>">Next ›</a><% } %>
-        </div><% } %>
+        </div>
+        <% } %>
       <% } %>
 
+      <!-- Category description -->
       <% if(cat && cat.description){ %>
-        <div class="card card-pad" style="margin-top:30px">
-          <h2 style="font-size:20px">About <%= cat.name %></h2>
-          <p class="muted" style="margin:0"><%= cat.description %></p>
+        <div style="margin-top:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);padding:22px;">
+          <h2 style="font-size:18px;margin-bottom:8px;">About <%= cat.name %></h2>
+          <p style="color:var(--text-3);margin:0;"><%= cat.description %></p>
         </div>
       <% } %>
     </div>
   </div>
 </div>
+
+<script>
+  function setGrid(cols) {
+    const grid = document.getElementById('productsGrid');
+    if(!grid) return;
+    const map = { 2:'repeat(2,1fr)', 3:'repeat(3,1fr)', 4:'repeat(4,1fr)' };
+    grid.style.gridTemplateColumns = map[cols] || 'repeat(3,1fr)';
+    localStorage.setItem('pgrid', cols);
+    [2,3,4].forEach(c => {
+      const btn = document.getElementById('gridBtn'+c);
+      if(!btn) return;
+      btn.style.background = c===cols ? 'var(--accent-glow-sm)' : 'var(--bg-card)';
+      btn.style.color      = c===cols ? 'var(--accent)' : 'var(--text-3)';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = parseInt(localStorage.getItem('pgrid')) || 3;
+    setGrid(saved);
+
+    // Mobile: show filter toggle button
+    if(window.innerWidth < 900) {
+      const t = document.getElementById('filterToggle');
+      if(t) t.style.display = 'inline-flex';
+    }
+
+    // Auto-submit filter radios
+    document.querySelectorAll('input[type=radio][name=wt]').forEach(r => {
+      r.addEventListener('change', () => r.closest('form').submit());
+    });
+  });
+</script>
 
 <%- include('partials/bottom') %>

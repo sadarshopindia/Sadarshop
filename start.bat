@@ -1,6 +1,6 @@
 @echo off
-title Satnam Threads Server
-echo Starting Satnam Threads...
+title Sadarshop Server
+echo Starting Sadarshop...
 echo.
 
 cd /d "%~dp0"

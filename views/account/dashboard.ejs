@@ -10,18 +10,16 @@
   <div class="grid g4" style="margin:24px 0">
     <div class="card card-pad"><span class="muted" style="font-size:12.5px">Account type</span>
       <h3 style="margin:6px 0 0;text-transform:capitalize"><%= user.account_type %></h3>
-      <% if(user.account_type==='wholesale'){ %>
-        <% if(user.status === 'blocked'){ %>
-          <span class="badge badge-sale" style="margin-top:8px">Blocked</span>
-          <p style="margin-top:8px;font-size:13px;line-height:1.4">Your account has been blocked.<br>Please contact us.</p>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <a href="https://wa.me/918459455595" class="btn btn-sm btn-gold">WhatsApp</a>
-            <a href="tel:+918459455595" class="btn btn-sm btn-ghost">Call</a>
-          </div>
-        <% } else { %>
-          <span class="badge <%= user.status==='active'?'badge-new':'badge-warn' %>" style="margin-top:8px"><%= user.status==='active'?'Approved — slab pricing on':'Pending approval' %></span>
-        <% } %>
-      <% } else { %><a class="btn-link" href="/wholesale">Upgrade to wholesale →</a><% } %>
+      <% if(user.status === 'blocked'){ %>
+        <span class="badge badge-sale" style="margin-top:8px">Blocked</span>
+        <p style="margin-top:8px;font-size:13px;line-height:1.4">Your account has been blocked.<br>Please contact us.</p>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <a href="https://wa.me/918459455595" class="btn btn-sm btn-gold">WhatsApp</a>
+          <a href="tel:+918459455595" class="btn btn-sm btn-ghost">Call</a>
+        </div>
+      <% } else { %>
+        <span class="badge badge-new" style="margin-top:8px">Active</span>
+      <% } %>
     </div>
 
     <div class="card card-pad"><span class="muted" style="font-size:12.5px">Enquiries</span><h3 style="margin:6px 0 0"><%= enquiries.length %></h3><a class="btn-link" href="#enquiries">View all →</a></div>

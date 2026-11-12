@@ -153,9 +153,19 @@
         <% } else { %>
           <input type="hidden" name="id" value="<%= p.id %>">
         <% } %>
-        <div class="buy-row">
-          <a href="https://wa.me/<%= S.whatsapp %>?text=Hi,%20we%20would%20like%20to%20enquire%20about%20this%20product:%20<%= encodeURIComponent(SITE_URL + '/p/' + p.slug) %>" target="_blank" class="btn btn-lg btn-gold" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; flex:1">Enquire Now</a>
-          <button class="pcard-fav <%= wishIds.includes(p.id)?'on':'' %>" type="button" data-wish="<%= p.id %>" style="position:static;width:44px;height:44px" aria-label="Save">
+        <div class="buy-row" style="flex-wrap: nowrap; align-items: stretch;">
+          <div class="qty" style="flex-shrink: 0;">
+            <button type="button" onclick="stepQty(this,-1)">−</button>
+            <input type="number" name="qty" value="<%= p.moq || 1 %>" min="<%= p.moq || 1 %>">
+            <button type="button" onclick="stepQty(this,1)">+</button>
+          </div>
+          <button class="btn btn-lg btn-gold" type="submit" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.29 5.17c-.29.67.2 1.4.92 1.4h11.23a1 1 0 0 0 .91-.58L19.4 15M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm7 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+            Add to cart
+          </button>
+          <button class="pcard-fav <%= wishIds.includes(p.id)?'on':'' %>" type="button" data-wish="<%= p.id %>" style="position:static;width:52px;height:auto;flex-shrink:0;border:1px solid var(--line);border-radius:4px;background:#fff;" aria-label="Save">
             <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-9.5A4 4 0 0112 8a4 4 0 017 2.5c0 5-7 9.5-7 9.5z" stroke-linejoin="round"/></svg>
           </button>
         </div>
@@ -195,8 +205,6 @@
   </div>
   <div class="tabpane on" id="tab-bulk"><div class="prose">
     <p>Buying by the carton? Add this item to your <a href="/enquiry">enquiry list</a> with the quantity you actually need and we will quote against it within one business day. There is no obligation and no payment at that stage.</p>
-
-    <p>Approved wholesale accounts see slab pricing across the whole catalogue automatically. <a href="/register?type=wholesale">Apply for an account</a> or WhatsApp <b><%= S.phone %></b>.</p>
   </div></div>
 
   <% if(related.length){ %>

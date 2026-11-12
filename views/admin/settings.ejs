@@ -32,9 +32,9 @@
     </div>
     <div class="card card-pad" style="margin-top:16px">
       <h2>Homepage Content</h2>
-      <div class="field"><label>Hero Headline</label><textarea class="input" name="home_hero_title" rows="2"><%= S.home_hero_title || "The garment accessories your line runs on — in stock, in Delhi." %></textarea></div>
-      <div class="field"><label>Hero Subtext</label><textarea class="input" name="home_hero_sub" rows="3"><%= S.home_hero_sub || "Tagging guns and barbs, tags and labels, pins, threading thread and packing consumables. Same-day dispatch on orders placed before 2 PM. Register an account to send bulk enquiries." %></textarea></div>
-      <div class="field"><label>Hero Kicker</label><input class="input" name="home_hero_kicker" value="<%= S.home_hero_kicker || "Wholesale since 1993" %>"></div>
+      <div class="field"><label>Hero Headline</label><textarea class="input" name="home_hero_title" rows="2"><%= S.home_hero_title || "Your satisfaction means everything for us" %></textarea></div>
+      <div class="field"><label>Hero Subtext</label><textarea class="input" name="home_hero_sub" rows="3"><%= S.home_hero_sub || "Register an account to send bulk enquiries." %></textarea></div>
+      <div class="field"><label>Hero Kicker</label><input class="input" name="home_hero_kicker" value="<%= S.home_hero_kicker || "Wholesale store" %>"></div>
       <div class="row">
         <div class="field"><label>Stat 1 Title</label><input class="input" name="home_stat1_title" value="<%= S.home_stat1_title || "33 yrs" %>"></div>
         <div class="field"><label>Stat 1 Text</label><input class="input" name="home_stat1_text" value="<%= S.home_stat1_text || "Supplying Delhi's garment trade" %>"></div>
@@ -54,12 +54,7 @@
       <div class="field"><label>Facebook URL</label><input class="input" name="social_facebook" value="<%= S.social_facebook %>"></div>
       <div class="field"><label>LinkedIn URL</label><input class="input" name="social_linkedin" value="<%= S.social_linkedin %>"></div>
     </div>
-    <div class="card card-pad" style="margin-top:16px">
-      <h2>Wholesale Page Content</h2>
-      <div class="field"><label>Wholesale Pitch & FAQs</label>
-        <textarea class="input" name="wholesale_content" rows="12"><%= S.wholesale_content %></textarea>
-        <div class="hint">Use HTML to format the text shown on /wholesale.</div></div>
-    </div>
+
     <div class="card card-pad" style="margin-top:16px">
       <h2>Your admin login</h2>
       <div class="field"><label>Admin email</label><input class="input" name="admin_email" value="<%= admin.email %>"></div>

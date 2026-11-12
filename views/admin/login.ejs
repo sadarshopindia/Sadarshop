@@ -1,16 +1,16 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin sign in · Satnam Threads</title><meta name="robots" content="noindex">
+<title>Admin sign in · <%= S.site_name %></title><meta name="robots" content="noindex">
 <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/static/css/admin.css"></head>
 <body><div class="login-page"><div class="login-card">
-  <img src="/static/img/brand/logo.jpg" alt="Satnam Threads" style="height:46px; width: auto; object-fit: contain; margin-bottom:20px">
+  <img src="<%= S.site_logo || '/static/img/brand/logo.svg' %>" alt="<%= S.site_name %>" style="height:46px; width: auto; object-fit: contain; margin-bottom:20px">
   <h1 style="font-size:22px">Admin sign in</h1>
   <p class="muted" style="margin-top:-6px">Manage products, orders and enquiries.</p>
   <% for(const f of flash){ %><div class="notice notice-<%= f.type==='error'?'bad':'ok' %>"><%= f.msg %></div><% } %>
   <form method="post" action="/admin/login">
-    <div class="field"><label>Email</label><input class="input" type="email" name="email" required autofocus value="admin@satnamthreads.com"></div>
+    <div class="field"><label>Email</label><input class="input" type="email" name="email" required autofocus value="admin@example.com"></div>
     <div class="field"><label>Password</label><input class="input" type="password" name="password" required></div>
     <button class="btn btn-block" type="submit">Sign in</button>
   </form>
-  <p class="muted center" style="font-size:12.5px;margin:16px 0 0">Default password <code>satnam@2026</code> — change it in Settings after first login.</p>
+  <p class="muted center" style="font-size:12.5px;margin:16px 0 0">Default password <code>admin123</code> — change it in Settings after first login.</p>
   <p class="center" style="margin:10px 0 0"><a href="/">← Back to storefront</a></p>
 </div></div></body></html>

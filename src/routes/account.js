@@ -42,27 +42,23 @@ module.exports = function (r) {
   r.post('/register', (req, res) => {
     const b = req.body;
     const email = String(b.email || '').trim().toLowerCase();
-    const type = b.account_type === 'wholesale' ? 'wholesale' : 'retail';
+    const type = 'retail';
     if (!b.name || !email || !b.password) { req.flash('error', 'Please complete all required fields.'); return res.redirect('/register'); }
     if (String(b.password).length < 8) { req.flash('error', 'Password must be at least 8 characters.'); return res.redirect('/register'); }
     if (b.password !== b.password2) { req.flash('error', 'The two passwords do not match.'); return res.redirect('/register'); }
-    if (type === 'wholesale' && !String(b.company || '').trim()) {
-      req.flash('error', 'Business name is required for a wholesale account.'); return res.redirect('/register?type=wholesale');
-    }
+
     if (db.prepare('SELECT id FROM users WHERE LOWER(email)=?').get(email)) {
       req.flash('error', 'An account with that email already exists. Try signing in.'); return res.redirect('/login');
     }
     const info = db.prepare(`INSERT INTO users(name,email,phone,password_hash,role,account_type,company,gstin,city,status)
       VALUES(?,?,?,?,?,?,?,?,?,?)`).run(b.name, email, b.phone || '', H.hashPassword(b.password), 'customer',
-      type, b.company || '', b.gstin || '', b.city || '', type === 'wholesale' ? 'pending' : 'active');
+      type, b.company || '', b.gstin || '', b.city || '', 'active');
     req.session.uid = Number(info.lastInsertRowid);
     
     // (Orders linking removed)
 
     req.regenerate(); req.saveSession();
-    req.flash('ok', type === 'wholesale'
-      ? 'Account created. We will approve wholesale pricing within one business day — you can browse and order in the meantime.'
-      : 'Account created. Welcome to Satnam Threads.');
+    req.flash('ok', 'Account created. Welcome to Sadarshop.');
     res.redirect('/account');
   });
 
@@ -118,7 +114,7 @@ module.exports = function (r) {
           auth: { user: testAccount.user, pass: testAccount.pass },
         });
         const info = await transporter.sendMail({
-          from: '"Satnam Threads" <noreply@satnamthreads.com>',
+          from: '"' + S.site_name + '" <noreply@' + new URL(SITE_URL).hostname + '>',
           to: email,
           subject: "Password Reset Request",
           text: `Hi ${u.name.split(' ')[0]},\n\nYou requested a password reset. Click the link below to set a new password:\n\n${resetLink}\n\nThis link will expire in 1 hour.\n\nIf you did not request this, please ignore this email.`,

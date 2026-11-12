@@ -31,7 +31,7 @@ function cartRows(token, kind, user) {
   const rows = db.prepare(`SELECT ci.qty, p.* FROM cart_items ci JOIN products p ON p.id=ci.product_id
     WHERE ci.token=? AND ci.kind=? ORDER BY ci.id`).all(token, kind);
   return rows.map(p => {
-    return Object.assign({}, p, { qty });
+    return Object.assign({}, p);
   });
 }
 

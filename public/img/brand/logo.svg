@@ -1,9 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56">
-<g color="#C8892B" transform="translate(2 -72) scale(.62)"><g stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round">
-    <rect x="62" y="46" width="76" height="12" rx="4" fill="currentColor" opacity=".9"/>
-    <rect x="62" y="142" width="76" height="12" rx="4" fill="currentColor" opacity=".9"/>
-    <path d="M78 58v84M122 58v84"/>
-    <path d="M78 72h44M78 88h44M78 104h44M78 120h44" opacity=".55"/>
-    <path d="M122 80c16 4 24 12 24 22s-8 18-24 22" opacity=".7"/></g></g>
-<text x="72" y="27" font-family="Georgia,'Times New Roman',serif" font-size="25" font-weight="700" fill="#12203C" letter-spacing=".2">Satnam Threads</text>
-<text x="73" y="44" font-family="ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="10.5" fill="#6B7791" letter-spacing="1.7">GARMENT ACCESSORIES · SINCE 1993</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 56" width="280" height="56">
+  <!-- Icon mark: shopping bag -->
+  <rect x="2" y="10" width="36" height="36" rx="8" fill="#BE3144"/>
+  <g stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 20L7 14h22l-2 6z"/>
+    <path d="M7 14v22a2 2 0 002 2h18a2 2 0 002-2V14"/>
+    <path d="M23 20a4 4 0 01-8 0"/>
+  </g>
+  <!-- Wordmark: Sadarshop -->
+  <text x="48" y="30" font-family="Georgia,'Times New Roman',serif" font-size="24" font-weight="700" fill="#1a1a2e" letter-spacing="0.3">Sadarshop</text>
+  <text x="49" y="46" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="10" fill="#6B7791" letter-spacing="1.8">WHOLESALE FABRICS &amp; TEXTILES</text>
+</svg>

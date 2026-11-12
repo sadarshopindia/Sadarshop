@@ -8,27 +8,27 @@
     <%= title ? title + ' · ' + S.site_name : S.site_name + ' — ' + S.tagline %>
   </title>
   <meta name="description"
-    content="<%= typeof metaDesc !== 'undefined' && metaDesc ? metaDesc : 'Satnam Threads supplies threads, zippers, elastics, buttons, and other related garment accessories to manufacturers, exporters, and resellers across India since 1993.' %>">
+    content="<%= typeof metaDesc !== 'undefined' && metaDesc ? metaDesc : 'Welcome to ' + S.site_name + ' – ' + S.tagline %>">
   <link rel="canonical" href="<%= SITE_URL + path %>">
   <meta property="og:site_name" content="<%= S.site_name %>">
   <meta property="og:title" content="<%= title || S.site_name %>">
   <meta property="og:type" content="website">
   <meta property="og:image" content="<%= SITE_URL %>/static/img/hero.svg">
-  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/static/css/style.css?v=11">
+  <link rel="icon" href="/static/img/favicon.svg?v=3" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/style.css?v=32">
   <style>
     :root {
-      --navy: <%=S.theme_color_primary || '#1D3159' %>;
-      --navy-2: <%=S.theme_color_primary || '#1D3159' %>;
-      --gold: <%=S.theme_color_secondary || '#B27A22' %>;
-      --gold-2: <%=S.theme_color_secondary || '#B27A22' %>;
+      --accent:   <%= S.theme_color_primary  || '#e03c5a' %>;
+      --accent-2: <%= S.theme_color_primary  || '#c42d49' %>;
+      --gold:     <%= S.theme_color_secondary || '#f0a500' %>;
+      --gold-2:   <%= S.theme_color_secondary || '#d48f00' %>;
     }
   </style>
   <script type="application/ld+json"><%- JSON.stringify({
   "@context":"https://schema.org","@type":"Organization",
   name:S.site_name, url:SITE_URL, logo:SITE_URL + (S.site_logo || "/static/img/brand/logo.jpg"),
-  description:"Wholesale supplier of garment accessories, tagging systems and threading thread. Founded 1993.",
-  foundingDate:"1993",
+  description:"Sadarshop — Premium Wholesale Fabrics & Textiles. Direct factory supply at wholesale prices across India.",
+  foundingDate:"2024",
   telephone:S.phone, email:S.email,
   address:{"@type":"PostalAddress",addressLocality:"Janakpuri, New Delhi",addressRegion:"Delhi",postalCode:"110058",addressCountry:"IN"}
 }) %></script>
@@ -40,7 +40,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
-
       gtag('config', 'G-LDKH8MJF6B');
     </script>
 </head>
@@ -54,21 +53,22 @@
       <% } %>
   </div>
 
+  <!-- Announcement bar -->
   <div class="announce">
     <div class="wrap">
-      <span>
-        <%= S.announcement %>
-      </span>
       <span class="announce-links">
-
-        <a href="/contact">Contact</a>
-        <% if(user){ %><a href="/account">My account</a>
-          <% } else { %><a href="/login">Login</a>
-            <% } %>
+        <a href="/pages/about-us">About Us</a>
+        <a href="/pages/shipping-delivery">Shipping</a>
       </span>
+      <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block;box-shadow:0 0 8px var(--ok);"></span>
+        <span style="color:var(--gold);font-weight:600;">25% OFF</span> on silver jewelry — today only &nbsp;<a href="/products" style="font-weight:700;">Shop now →</a>
+      </span>
+      <span style="font-size:12.5px;">Need help? <b style="color:var(--text)"><%= S.phone %></b></span>
     </div>
   </div>
 
+  <!-- Header -->
   <header class="header">
     <div class="wrap header-main">
       <button class="menu-toggle" onclick="document.querySelector('.nav').classList.toggle('open')" aria-label="Menu">
@@ -76,29 +76,41 @@
           <path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round" />
         </svg>
       </button>
-      <a class="logo" href="/" style="display:flex; align-items:center; gap:16px; text-decoration:none;">
-        <img src="<%= S.site_logo || '/static/img/brand/logo.jpg' %>" alt="<%= S.site_name %>"
-          style="height: 64px; width: auto; object-fit: contain;">
-        <div style="display:flex; flex-direction:column; justify-content:center;">
-          <span
-            style="font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1;">Satnam
-            Threads</span>
-          <span
-            style="font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Since
-            1993</span>
+
+      <!-- Logo -->
+      <a class="logo" href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;flex-shrink:0;box-shadow:0 4px 14px var(--accent-glow);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke-linejoin="round"/>
+            <path d="M3 6h18M16 10a4 4 0 01-8 0" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="site-name"><%= S.site_name %></span>
+          <span class="site-tagline"><%= S.tagline %></span>
         </div>
       </a>
-      <form class="searchbar" action="/products" method="get" role="search" style="position:relative">
+
+      <!-- Search -->
+      <form class="searchbar" action="/products" method="get" role="search">
+        <select name="c" id="cat-select" onchange="if(this.value){this.form.action='/c/'+this.value;this.name='';}else{this.form.action='/products';this.name='c';}">
+          <option value="">All Categories</option>
+          <% for(const g of tree){ %>
+            <option value="<%= g.slug %>"><%= g.name %></option>
+          <% } %>
+        </select>
         <input type="search" name="q" value="<%= query.q || '' %>"
-          placeholder="Search tag guns, barbs, threading thread, labels…" aria-label="Search products"
+          placeholder="Search products..." aria-label="Search products"
           autocomplete="off">
-        <button type="submit" aria-label="Search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2.2">
+        <button type="submit" aria-label="Search">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <circle cx="11" cy="11" r="7" />
             <path d="M20 20l-3.6-3.6" stroke-linecap="round" />
-          </svg></button>
+          </svg>
+        </button>
         <div id="global-search-dropdown" class="search-dropdown hidden"></div>
       </form>
+
       <script>
         document.addEventListener('DOMContentLoaded', () => {
           const input = document.querySelector('.searchbar input[name="q"]');
@@ -116,20 +128,18 @@
           }
 
           let timeout = null;
-          input.addEventListener('input', (e) => {
-            clearTimeout(timeout);
-            const q = e.target.value.trim();
-            if (!q) {
-              dropdown.classList.add('hidden');
-              return;
-            }
 
+          function doSearch(catSlug) {
+            clearTimeout(timeout);
+            const q = input.value.trim();
+            if (!q) { dropdown.classList.add('hidden'); return; }
             timeout = setTimeout(() => {
-              fetch('/api/search?q=' + encodeURIComponent(q))
+              const catParam = catSlug ? '&c=' + encodeURIComponent(catSlug) : '';
+              fetch('/api/search?q=' + encodeURIComponent(q) + catParam)
                 .then(r => r.json())
                 .then(data => {
                   if (!data.results || data.results.length === 0) {
-                    dropdown.innerHTML = '<div class="dropdown-empty">Nothing matched that</div>';
+                    dropdown.innerHTML = '<div class="dropdown-empty">Nothing matched that search</div>';
                     dropdown.classList.remove('hidden');
                     return;
                   }
@@ -142,21 +152,41 @@
                   <div class="di-cat">${p.category}</div>
                   <div class="di-title">${highlight(p.title, q)}</div>
                 </div>
-              </a>
-            `;
+              </a>`;
                   }
                   dropdown.innerHTML = html;
                   dropdown.classList.remove('hidden');
                 });
-            }, 150);
+            }, 0);
+          }
+
+          function getCatSlug() {
+            const sel = document.getElementById('cat-select');
+            return sel ? (sel.getAttribute('data-cat') || '') : '';
+          }
+
+          input.addEventListener('input', () => {
+            clearTimeout(timeout);
+            const q = input.value.trim();
+            if (!q) { dropdown.classList.add('hidden'); return; }
+            timeout = setTimeout(() => doSearch(getCatSlug()), 150);
           });
+
+          // Re-fetch immediately when category changes while search text is present
+          const selEl = document.getElementById('cat-select');
+          if (selEl) {
+            selEl.addEventListener('change', () => {
+              const slug = selEl.value;
+              selEl.setAttribute('data-cat', slug);
+              doSearch(slug);
+            });
+          }
 
           document.addEventListener('click', (e) => {
             if (!input.contains(e.target) && !dropdown.contains(e.target)) {
               dropdown.classList.add('hidden');
             }
           });
-
           input.addEventListener('focus', () => {
             if (input.value.trim() && dropdown.innerHTML.trim() !== '') {
               dropdown.classList.remove('hidden');
@@ -164,85 +194,88 @@
           });
         });
       </script>
+
+      <!-- Actions -->
       <div class="head-actions">
         <a class="hact" href="/wishlist" aria-label="Wishlist">
           <svg viewBox="0 0 24 24">
             <path d="M12 20s-7-4.5-7-9.5A4 4 0 0112 8a4 4 0 017 2.5c0 5-7 9.5-7 9.5z" stroke-linejoin="round" />
           </svg>
           <span>Wishlist</span>
-          <% if(counts.wish){ %><i class="count">
-              <%= counts.wish %>
-            </i>
-            <% } %>
+          <% if(counts.wish){ %><i class="count"><%= counts.wish %></i><% } %>
         </a>
 
+        <a class="hact" href="/enquiry" aria-label="Enquiry">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.29 5.17c-.29.67.2 1.4.92 1.4h11.23a1 1 0 0 0 .91-.58L19.4 15M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm7 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          <span>Enquiry</span>
+          <% if(counts.enq){ %><i class="count"><%= counts.enq %></i><% } else { %><i class="count">0</i><% } %>
+        </a>
 
         <a class="hact hide-on-mobile" href="<%= user ? '/account' : '/login' %>" aria-label="Account">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="8" r="3.6" />
             <path d="M4.5 20a7.5 7.5 0 0115 0" stroke-linecap="round" />
           </svg>
-          <span>
-            <%= user ? (user.name.split(' ')[0]) : ' Account' %>
-          </span>
+          <span><%= user ? (user.name.split(' ')[0]) : 'Account' %></span>
         </a>
-        <div class="head-phone">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7">
-            <path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a1 1 0 01-1 1A16 16 0 014 5a1 1 0 011-1z"
-              stroke-linejoin="round" />
-          </svg>
-          <div><b>
-              <%= S.phone %>
-            </b><span>Mon–Sat, 10–6</span></div>
-        </div>
       </div>
     </div>
   </header>
 
+  <!-- Navigation -->
   <nav class="nav">
     <div class="wrap">
-      <a href="/" class="<%= path==='/' ? 'active':'' %>">Home</a>
       <div class="megawrap">
-        <button class="navbtn" onclick="this.parentNode.classList.toggle('open')" aria-expanded="false">
-          All products
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <button class="navbtn browse-btn" onclick="this.parentNode.classList.toggle('open')" aria-expanded="false">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
+          Browse Categories
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:auto;">
             <path d="M6 9l6 6 6-6" stroke-linecap="round" />
           </svg>
         </button>
         <div class="mega">
           <% for(const g of tree){ %>
             <div>
-              <h5><a href="/c/<%= g.slug %>">
-                  <%= g.name %>
-                </a></h5>
+              <h5><a href="/c/<%= g.slug %>"><%= g.name %></a></h5>
               <% if(g.children.length){ %>
                 <ul>
                   <% for(const c of g.children){ %>
-                    <li><a href="/c/<%= c.slug %>">
-                        <%= c.name %>
-                      </a></li>
-                    <% } %>
+                    <li><a href="/c/<%= c.slug %>"><%= c.name %></a></li>
+                  <% } %>
                 </ul>
-                <% } %>
+              <% } %>
             </div>
-            <% } %>
+          <% } %>
         </div>
       </div>
-      <% const hLinks=(S.menu_header || 'Shop all | /products\nWholesale | /wholesale\nAbout | /pages/about-us'
+
+      <a href="/" class="<%= path==='/' ? 'active':'' %>">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Home
+      </a>
+
+      <% const hLinks=(S.menu_header || 'Products | /products\nAbout us | /pages/about-us\nShipping & Returns | /pages/shipping-delivery\nPrivacy Policy | /pages/privacy-policy\nContact us | /contact'
         ).split('\n').filter(l=> l.trim()).map(l => {
         const p = l.split('|'); return { name: p[0].trim(), url: p[1] ? p[1].trim() : '#' };
         });
         %>
-        <% for(const l of hLinks){ %>
-          <a href="<%= l.url %>" class="<%= path===l.url ? 'active':'' %>">
-            <%= l.name %>
-          </a>
-          <% } %>
-            <a class="spacer"
-              href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in."
-              style="background:#25D366; color:#fff; padding:6px 14px; border-radius:6px; font-weight:600; font-size:13px; align-self:center; border-bottom:none; text-decoration:none;">WhatsApp
-              us</a>
-            <% if(user && user.role==='admin' ){ %><a href="/admin" style="color:var(--gold)">Admin panel</a>
-              <% } %>
+      <% for(const l of hLinks){ %>
+        <a href="<%= l.url %>" class="<%= path===l.url ? 'active':'' %>">
+          <%= l.name %>
+        </a>
+      <% } %>
+
+      <div class="nav-phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        <div>
+          <b><%= S.phone || '9821008088' %></b>
+          <span>24/7 Support</span>
+        </div>
+      </div>
+      <% if(user && user.role==='admin' ){ %><a href="/admin" style="color:var(--gold)">Admin</a><% } %>
     </div>
   </nav>

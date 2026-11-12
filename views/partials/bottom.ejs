@@ -2,29 +2,43 @@
   <div class="wrap">
     <div class="grid">
       <div class="footer-brand">
-        <img src="<%= S.site_logo || '/static/img/brand/logo.jpg' %>" alt="<%= S.site_name %>" style="max-height: 56px; width: auto; object-fit: contain;">
-        <p style="font-size:14px;max-width:34ch">Wholesale garment accessories from Delhi since 1993. Tagging systems, tags and labels, pins, threading thread and packing consumables.</p>
-        <div class="footer-contact">
-          <div><b>Call / WhatsApp:</b> <a href="tel:<%= S.phone.replace(/\s/g,'') %>" style="display:inline"><%= S.phone %></a></div>
-          <div><b>Email:</b> <a href="mailto:<%= S.email %>" style="display:inline"><%= S.email %></a></div>
-          <div><b>Address:</b> <%= S.address %></div>
-          <div><b>Hours:</b> <%= S.hours %></div>
+        <!-- Logo -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;flex-shrink:0;box-shadow:0 4px 14px var(--accent-glow);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke-linejoin="round"/>
+              <path d="M3 6h18M16 10a4 4 0 01-8 0" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-family:var(--serif);font-size:20px;font-weight:800;color:var(--text);"><%= S.site_name %></div>
+            <div style="font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-top:2px;"><%= S.tagline %></div>
+          </div>
         </div>
-        <div class="footer-social" style="margin-top: 16px; display: flex; gap: 12px; font-weight: 600; font-size: 13px;">
-          <% if(S.social_instagram){ %><a href="<%= S.social_instagram %>" target="_blank" style="text-decoration: underline;">Instagram</a><% } %>
-          <% if(S.social_facebook){ %><a href="<%= S.social_facebook %>" target="_blank" style="text-decoration: underline;">Facebook</a><% } %>
-          <% if(S.social_linkedin){ %><a href="<%= S.social_linkedin %>" target="_blank" style="text-decoration: underline;">LinkedIn</a><% } %>
+        <p style="font-size:13.5px;max-width:30ch;color:var(--text-3);line-height:1.8;"><%= S.tagline || 'Premium garment accessories and fashion jewellery for wholesale and retail.' %></p>
+        <div class="footer-contact" style="margin-top:16px;">
+          <div style="margin-bottom:6px;"><b>Call / WhatsApp:</b> <a href="tel:<%= S.phone.replace(/\s/g,'') %>" style="display:inline;color:var(--text-2);"><%= S.phone %></a></div>
+          <div style="margin-bottom:6px;"><b>Email:</b> <a href="mailto:<%= S.email %>" style="display:inline;color:var(--text-2);"><%= S.email %></a></div>
+          <div style="margin-bottom:6px;"><b>Address:</b> <span style="color:var(--text-3);"><%= S.address %></span></div>
+          <div><b>Hours:</b> <span style="color:var(--text-3);"><%= S.hours %></span></div>
+        </div>
+        <div class="footer-social">
+          <% if(S.social_instagram){ %><a href="<%= S.social_instagram %>" target="_blank">Instagram</a><% } %>
+          <% if(S.social_facebook){ %><a href="<%= S.social_facebook %>" target="_blank">Facebook</a><% } %>
+          <% if(S.social_linkedin){ %><a href="<%= S.social_linkedin %>" target="_blank">LinkedIn</a><% } %>
         </div>
       </div>
+
       <div>
         <h5>Shop</h5>
         <% for(const g of tree.slice(0,6)){ %><a href="/c/<%= g.slug %>"><%= g.name %></a><% } %>
         <a href="/products">All products</a>
       </div>
+
       <div>
         <h5>Company</h5>
-        <% 
-          const fLinks = (S.menu_footer_company || 'About us | /pages/about-us\nWholesale programme | /wholesale\nContact us | /contact\nTerms & conditions | /pages/terms-conditions\nPrivacy policy | /pages/privacy-policy').split('\n').filter(l => l.trim()).map(l => {
+        <%
+          const fLinks = (S.menu_footer_company || 'About us | /pages/about-us\nContact us | /contact\nTerms & conditions | /pages/terms-conditions\nPrivacy policy | /pages/privacy-policy').split('\n').filter(l => l.trim()).map(l => {
             const p = l.split('|'); return { name: p[0].trim(), url: p[1] ? p[1].trim() : '#' };
           });
         %>
@@ -32,35 +46,54 @@
           <a href="<%= l.url %>"><%= l.name %></a>
         <% } %>
       </div>
+
       <div>
-        <h5>Trade updates</h5>
-        <p style="font-size:14px">New stock arrivals and slab-price revisions, roughly once a month. No spam.</p>
+        <h5>Trade Updates</h5>
+        <p style="font-size:13.5px;color:var(--text-3);margin-bottom:14px;">New stock and price revisions — roughly once a month. No spam.</p>
         <form class="newsletter" method="post" action="/subscribe">
           <input type="email" name="email" placeholder="Your work email" required>
-          <button class="btn btn-gold" type="submit">Join</button>
+          <button class="btn btn-gold btn-sm" type="submit">Join</button>
         </form>
-        <h5 style="margin-top:26px">Wholesale enquiries</h5>
-        <p style="font-size:14px">Message us on WhatsApp — we reply within one business day.</p>
-        <a class="btn btn-sm" href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in." style="background:#25D366;color:#fff;border-color:#25D366;font-size:11px;padding:6px 14px;display:inline-flex;">WhatsApp us</a>
+        <h5 style="margin-top:26px;">Bulk Enquiries</h5>
+        <p style="font-size:13.5px;color:var(--text-3);margin-bottom:12px;">Message us on WhatsApp for bulk orders — we reply within one business day.</p>
+        <a class="btn btn-sm" href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in." style="background:#25D366;color:#fff;border-color:#25D366;display:inline-flex;box-shadow:0 4px 14px rgba(37,211,102,.25);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>
+          WhatsApp Us
+        </a>
       </div>
     </div>
+
     <div class="footer-bottom">
       <span>© <%= new Date().getFullYear() %> <%= S.site_name %>. All rights reserved.</span>
-      <span>GSTIN <%= S.gstin %> · Made in Delhi</span>
+      <span style="color:var(--text-3);">GSTIN <%= S.gstin %></span>
     </div>
   </div>
 </footer>
 
+<!-- WhatsApp FAB -->
 <a class="wa" href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in." target="_blank" rel="noopener" aria-label="WhatsApp us">
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.8 14.2c-.2.7-1.2 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a12 12 0 01-6.6-5.8c-.5-.9-.8-1.9-.2-2.9.3-.4.6-.7 1-.7h.7c.2 0 .5 0 .7.5l.9 2.1c.1.2 0 .4-.1.6l-.4.5c-.1.2-.3.3-.1.6a8 8 0 003.6 3.1c.3.1.5.1.7-.1l.8-1c.2-.2.4-.2.6-.1l2 1c.3.1.4.2.4.4.1.2.1.6 0 .9z"/></svg>
 </a>
 
-
+<!-- Mobile nav -->
 <nav class="mobilenav">
-  <a href="/"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z" stroke-linejoin="round"/></svg>Home</a>
-  <a href="/products"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>All Products</a>
-
-  <a href="<%= user ? '/account' : '/login' %>"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0115 0" stroke-linecap="round"/></svg>Sign In</a>
+  <a href="/">
+    <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z" stroke-linejoin="round"/></svg>
+    Home
+  </a>
+  <a href="/products">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    Products
+  </a>
+  <a href="/enquiry">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2.29 5.17c-.29.67.2 1.4.92 1.4h11.23M9 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z"/></svg>
+    Enquiry
+    <% if(counts && counts.enq){ %><i class="count"><%= counts.enq %></i><% } %>
+  </a>
+  <a href="<%= user ? '/account' : '/login' %>">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0115 0" stroke-linecap="round"/></svg>
+    Sign In
+  </a>
 </nav>
 
 <script src="/static/js/main.js" defer></script>

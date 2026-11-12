@@ -10,8 +10,8 @@ const DIR = path.join(__dirname, '..', 'data');
    network drives) cannot host a SQLite file. If that happens, fall back to a
    local folder and say so loudly rather than crashing. */
 function open() {
-  const preferred = process.env.DB_FILE || path.join(DIR, 'satnam.db');
-  const attempts = [preferred, path.join(os.tmpdir(), 'satnam-threads', 'satnam.db')];
+  const preferred = process.env.DB_FILE || (fs.existsSync(path.join(DIR, 'sadarshop.db')) ? path.join(DIR, 'sadarshop.db') : path.join(DIR, 'satnam.db'));
+  const attempts = [preferred, path.join(os.tmpdir(), 'sadarshop', path.basename(preferred))];
   let lastErr;
   for (const file of attempts) {
     try {

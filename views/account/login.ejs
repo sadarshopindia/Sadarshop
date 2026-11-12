@@ -2,7 +2,7 @@
 <div class="wrap"><div class="auth-wrap">
   <div class="card card-pad">
     <h1 style="font-size:26px">Sign in</h1>
-    <p class="muted">Wholesale accounts see slab pricing once signed in.</p>
+
     <form method="post" action="/login">
       <input type="hidden" name="next" value="<%= query.next||'' %>">
       <div class="field"><label>Email address</label><input class="input" type="email" name="email" value="<%= query.email || '' %>" required autofocus></div>
@@ -12,11 +12,7 @@
       </div>
       <button class="btn btn-lg btn-block" type="submit">Sign in</button>
     </form>
-    <p class="center" style="margin:18px 0 0">New here? <a href="/register"><b>Create an account</b></a></p>
-    <hr>
-    <div class="notice notice-info" style="font-size:13px">
-      <span>🔑</span><div><b>Demo logins</b><br>Wholesale buyer — buyer@example.com / demo1234<br>Administrator — admin@satnamthreads.com / satnam@2026</div>
-    </div>
+    <p class="center" style="margin:18px 0 0">New here? <a href="/register"><b>Create an account</b></a></p>    </div>
   </div>
 </div></div>
 <%- include('partials/bottom') %>

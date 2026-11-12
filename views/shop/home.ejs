@@ -1,99 +1,237 @@
 <%- include('partials/top') %>
 
-<section class="hero"><div class="wrap">
-  <div>
-    <span class="kicker"><%= S.home_hero_kicker || "Wholesale since 1993" %></span>
-    <h1><%= S.home_hero_title || "The garment accessories your line runs on — in stock, in Delhi." %></h1>
-    <p><%= S.home_hero_sub || "Tagging guns and barbs, tags and labels, pins, threading thread and packing consumables. Same-day dispatch on orders placed before 2 PM. Register an account to send bulk enquiries." %></p>
-    <div class="hero-cta">
-      <a class="btn btn-gold btn-lg" href="/products">Browse the catalogue</a>
-      <a class="btn btn-ghost btn-lg" href="/wholesale" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.34)">Open a wholesale account</a>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="kicker">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Premium Wholesale & Retail
+      </div>
+      <h1>Your satisfaction<br>means <span style="color:var(--accent);">everything</span></h1>
+      <p>Discover premium garment accessories, silver jewellery, and fashion accessories — all at competitive wholesale prices. Quality guaranteed.</p>
+      <div class="hero-cta">
+        <a href="/products" class="btn btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+          Browse All Products
+        </a>
+        <a href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20your%20products." class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>
+          WhatsApp Us
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>500+</b><span>Products Listed</span></div>
+        <div class="hero-stat"><b>10K+</b><span>Happy Customers</span></div>
+        <div class="hero-stat"><b>24/7</b><span>Support</span></div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div><b><%= S.home_stat1_title || "33 yrs" %></b><span><%= S.home_stat1_text || "Supplying Delhi's garment trade" %></span></div>
-      <div><b><%= S.home_stat2_title || "2,000+" %></b><span><%= S.home_stat2_text || "Exporters, salons & retailers served" %></span></div>
-      <div><b>Same day</b><span>Dispatch before 2 PM</span></div>
-      <div><b>1 day</b><span>WhatsApp response, guaranteed</span></div>
+
+    <!-- Hero right showcase card -->
+    <div class="hero-showcase">
+      <div class="hero-card">
+        <div class="hero-card-head">
+          <span class="hero-card-title">Direct Factory Supply</span>
+          <span class="hero-badge-live"><i></i> Verified Store</span>
+        </div>
+        <ul class="hero-feature-list">
+          <li class="hero-feature-item">
+            <div class="hero-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            </div>
+            <div class="hero-feature-text">
+              <b>Bulk & Wholesale Rates</b>
+              <span>Tiered wholesale discounts for businesses & tailors</span>
+            </div>
+          </li>
+          <li class="hero-feature-item">
+            <div class="hero-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="hero-feature-text">
+              <b>100% Quality Inspected</b>
+              <span>Premium finish tag pins, spools, clips & accessories</span>
+            </div>
+          </li>
+          <li class="hero-feature-item">
+            <div class="hero-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="hero-feature-text">
+              <b>Same-Day Dispatch</b>
+              <span>Express courier across all major cities in India</span>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="hero-art"><img src="/static/img/hero.svg" alt="" width="760" height="560"></div>
-</div></section>
+</section>
 
-
-
-<section class="section"><div class="wrap">
-  <div class="section-head">
-    <div><h2>Shop by category</h2><p>Five ranges, twenty-four categories, everything a garment floor consumes.</p></div>
-    <a class="btn btn-ghost btn-sm" href="/products">View all products</a>
+<!-- Trust bar -->
+<section class="trust">
+  <div class="wrap" style="padding:0;">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="trust-content">
+          <span class="trust-title">Fast Dispatch</span>
+          <span class="trust-sub">Ships within 24h</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="trust-content">
+          <span class="trust-title">Quality Guaranteed</span>
+          <span class="trust-sub">100% authentic materials</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div class="trust-content">
+          <span class="trust-title">WhatsApp Support</span>
+          <span class="trust-sub">24/7 business assistance</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="grid g5">
-    <% for(const c of topCats){ %>
-      <a class="cat-tile" href="/c/<%= c.slug %>" style="min-width: 0;">
-        <img src="<%= c.image || '/static/img/placeholder.svg' %>" alt="<%= c.name %>" loading="lazy" width="240" height="240">
-        <b><%= c.name %></b><span><%= c.n %> product<%= c.n===1?'':'s' %></span>
+</section>
+
+<hr class="glow-divider">
+
+<!-- Featured Categories -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">Shop by Category</div>
+        <h2 style="margin-top:4px;">Featured Categories</h2>
+      </div>
+      <a href="/products" class="btn btn-ghost btn-sm">
+        View All
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6" stroke-linecap="round"/></svg>
       </a>
-    <% } %>
+    </div>
+    <div class="grid g5">
+      <% for(const c of topCats){ %>
+        <a class="cat-tile" href="/c/<%= c.slug %>">
+          <img src="<%= c.image || '/static/img/placeholder.svg' %>" alt="<%= c.name %>" loading="lazy" width="240" height="240">
+          <b><%= c.name %></b>
+          <span><%= c.n %> product<%= c.n===1?'':'s' %></span>
+        </a>
+      <% } %>
+    </div>
   </div>
-</div></section>
+</section>
 
+<hr class="glow-divider">
+
+<!-- Popular Products -->
 <% if(featured.length){ %>
-<section class="section" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
-  <div class="section-head">
-    <div><h2>Best sellers this quarter</h2><p>What Delhi's exporters and salons reorder most.</p></div>
-    <a class="btn btn-ghost btn-sm" href="/products?sort=popular">See all</a>
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">Bestsellers</div>
+        <h2 style="margin-top:4px;">Popular Products</h2>
+      </div>
+      <a href="/products" class="btn btn-ghost btn-sm">
+        All Products
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+    <div class="grid g4"><% for(const p of featured){ %><%- include('partials/pcard',{p}) %><% } %></div>
   </div>
-  <div class="grid g4"><% for(const p of featured){ %><%- include('partials/pcard',{p}) %><% } %></div>
-</div></section>
+</section>
 <% } %>
 
+<!-- New in Stock -->
 <% if(latest.length){ %>
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><h2>New in stock</h2><p>Latest additions to the catalogue.</p></div>
-    <a class="btn btn-ghost btn-sm" href="/products?sort=newest">See all new</a></div>
-  <div class="grid g4"><% for(const p of latest){ %><%- include('partials/pcard',{p}) %><% } %></div>
-</div></section>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">Just Arrived</div>
+        <h2 style="margin-top:4px;">New in Stock</h2>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="/products?sort=newest">See all new</a>
+    </div>
+    <div class="grid g4"><% for(const p of latest){ %><%- include('partials/pcard',{p}) %><% } %></div>
+  </div>
+</section>
 <% } %>
 
-<section class="section" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
-  <div class="grid g2" style="gap:24px;align-items:stretch">
-    <div class="card card-pad" style="background:linear-gradient(140deg,#1D3159,#0E1B33);color:#fff;border:0">
-      <span class="badge badge-gold" style="background:rgba(224,169,74,.16);color:var(--gold-2)">For businesses</span>
-      <h2 style="color:#fff;margin-top:14px">Bulk sourcing made easy.</h2>
-      <p style="color:#B9C6DD">Add items to an enquiry list and we quote against your exact requirement within one business day.</p>
-      <ul style="color:#B9C6DD;font-size:14.5px;padding-left:20px;line-height:2">
-        <li>Competitive volume pricing</li>
-        <li>GST invoices against your business name</li>
-      </ul>
-      <a class="btn btn-gold" href="/register?type=wholesale">Apply for a wholesale account</a>
-    </div>
-    <div class="card card-pad">
-      <span class="badge">Since 1993</span>
-      <h2 style="margin-top:14px">Thirty years of reliable service.</h2>
-      <p class="lead">Established in 1993, our shop runs on transparency. You can always count on us for honest answers and fair prices right out of the gate.</p>
-      <p><strong>Text us on WhatsApp.</strong></p>
-      <p>Sending a message is the absolute best way to reach us. It guarantees a prompt, accurate reply and keeps your order details perfectly clear.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
-        <a class="btn" href="/pages/about-us">Read our story</a>
-        <a class="btn btn-ghost" href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in.">WhatsApp <%= S.phone %></a>
-      </div>
-    </div>
-  </div>
-</div></section>
+<hr class="glow-divider">
 
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><h2>Every category</h2><p>Jump straight to what you need.</p></div></div>
-  <div class="grid g3" style="gap:20px">
-    <% for(const g of tree){ %>
-      <div class="card card-pad cat-bg-card" style="background-image: url('/static/img/categories/<%= g.slug %>.png');">
-        <h3 style="margin-bottom:10px"><a href="/c/<%= g.slug %>"><%= g.name %></a></h3>
-        <p class="muted" style="font-size:14px"><%= g.description %></p>
-        <% if(g.children.length){ %>
-        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:12px">
-          <% for(const c of g.children){ %><a class="pill" href="/c/<%= c.slug %>"><%= c.name %></a><% } %>
-        </div><% } %>
+<!-- About Banner -->
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <span class="badge badge-gold" style="margin-bottom:16px;">About Us</span>
+        <h2 style="margin-top:12px;"><%= S.home_about_title || "Reliable service for your business." %></h2>
+        <p class="lead" style="margin-bottom:20px;"><%= S.home_about_lead || "Our shop runs on transparency. You can always count on us for honest answers and fair prices right out of the gate." %></p>
+        <p style="margin-bottom:24px;">Sending a message is the absolute best way to reach us. It guarantees a prompt, accurate reply and keeps your order details perfectly clear.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a class="btn" href="/pages/about-us">Read our story</a>
+          <a class="btn btn-ghost" href="https://wa.me/<%= S.whatsapp %>?text=Hi%20<%= encodeURIComponent(S.site_name) %>,%20we%20would%20like%20to%20enquire%20about%20the%20products%20that%20you%20deal%20in.">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:#25D366"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>
+            WhatsApp <%= S.phone %>
+          </a>
+        </div>
       </div>
-    <% } %>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card card-pad" style="text-align:center;">
+          <div style="font-size:36px;font-weight:900;color:var(--accent);font-family:var(--serif);">500+</div>
+          <div style="font-size:13px;color:var(--text-3);margin-top:4px;">Products</div>
+        </div>
+        <div class="card card-pad" style="text-align:center;">
+          <div style="font-size:36px;font-weight:900;color:var(--gold);font-family:var(--serif);">10K+</div>
+          <div style="font-size:13px;color:var(--text-3);margin-top:4px;">Customers</div>
+        </div>
+        <div class="card card-pad" style="text-align:center;">
+          <div style="font-size:36px;font-weight:900;color:var(--ok);font-family:var(--serif);">24/7</div>
+          <div style="font-size:13px;color:var(--text-3);margin-top:4px;">Support</div>
+        </div>
+        <div class="card card-pad" style="text-align:center;">
+          <div style="font-size:36px;font-weight:900;color:var(--text-2);font-family:var(--serif);">2020</div>
+          <div style="font-size:13px;color:var(--text-3);margin-top:4px;">Est. Year</div>
+        </div>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
+
+<!-- Every Category -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">Full Catalog</div>
+        <h2 style="margin-top:4px;">Every Category</h2>
+        <p>Jump straight to what you need.</p>
+      </div>
+    </div>
+    <div class="grid g3" style="gap:20px">
+      <% for(const g of tree){ %>
+        <div class="card card-pad cat-bg-card" style="background-image: url('/static/img/categories/<%= g.slug %>.png');">
+          <h3 style="margin-bottom:10px"><a href="/c/<%= g.slug %>"><%= g.name %></a></h3>
+          <p class="muted" style="font-size:14px"><%= g.description %></p>
+          <% if(g.children.length){ %>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:14px">
+            <% for(const c of g.children){ %><a class="pill" href="/c/<%= c.slug %>"><%= c.name %></a><% } %>
+          </div><% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
 
 <%- include('partials/bottom') %>

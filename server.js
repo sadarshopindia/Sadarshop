@@ -1,5 +1,5 @@
 'use strict';
-/* Satnam Threads — storefront + admin. Zero external dependencies. */
+/* Sadarshop — storefront + admin. Zero external dependencies. */
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -27,7 +27,7 @@ if (db.prepare('SELECT COUNT(*) c FROM categories').get().c === 0) {
 }
 
 const PORT = Number(process.env.PORT || 3000);
-const SITE_URL = (process.env.SITE_URL || 'https://satnamthreads.com').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://sadarshop.com').replace(/\/$/, '');
 
 const router = new Router();
 
@@ -72,7 +72,7 @@ router.use(async (req, res) => {
   res.locals = {
     S, SITE_URL, path: req.pathname, query: req.query, user, token, flash,
     tree: tree.roots,
-    isWholesale: !!(user && user.account_type === 'wholesale' && user.status === 'active'),
+    isWholesale: false,
     counts: {
       enq: ST.cartCount(token, 'enquiry'),
       wish: db.prepare('SELECT COUNT(*) n FROM wishlist WHERE token=?').get(token).n
@@ -103,13 +103,13 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log('');
   console.log('  ┌──────────────────────────────────────────────┐');
-  console.log('  │  Satnam Threads is running                   │');
+  console.log('  │  Sadarshop is running                        │');
   console.log('  ├──────────────────────────────────────────────┤');
   console.log(`  │  Storefront   http://localhost:${PORT}          │`);
   console.log(`  │  Admin panel  http://localhost:${PORT}/admin    │`);
   console.log('  └──────────────────────────────────────────────┘');
   console.log('');
-  console.log('  Admin login:  admin@satnamthreads.com / satnam@2026');
+  console.log('  Admin login:  admin@example.com / admin123');
   console.log('  Press Ctrl+C to stop.');
   console.log('');
 });

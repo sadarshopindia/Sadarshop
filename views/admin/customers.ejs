@@ -1,10 +1,8 @@
 <%- include('admin/partials-top',{title:'Customers',nav:'cust'}) %>
-<div class="topbar"><div><h1>Customers</h1><p class="muted" style="margin:0"><%= pg.total %> accounts · <%= pendingUsers %> wholesale applications awaiting approval</p></div></div>
+<div class="topbar"><div><h1>Customers</h1><p class="muted" style="margin:0"><%= pg.total %> accounts</p></div></div>
 <form class="filters" method="get">
   <input class="input" name="q" placeholder="Name, email, company or phone" value="<%= query.q||'' %>">
-  <select class="input" name="type"><option value="">Any type</option>
-    <option value="retail" <%= query.type==='retail'?'selected':'' %>>Retail</option>
-    <option value="wholesale" <%= query.type==='wholesale'?'selected':'' %>>Wholesale</option></select>
+
   <select class="input" name="status"><option value="">Any status</option>
     <% for(const s of ['active','pending','blocked']){ %><option value="<%= s %>" <%= query.status===s?'selected':'' %>><%= s %></option><% } %></select>
   <button class="btn btn-sm" type="submit">Filter</button><a class="btn btn-sm btn-ghost" href="/admin/customers">Reset</a>
@@ -15,7 +13,7 @@
     <td><b><%= u.name %></b><br><span class="muted">Joined <%= fmtDate(u.created_at) %></span></td>
     <td><%= u.company || '—' %><% if(u.gstin){ %><br><span class="muted"><%= u.gstin %></span><% } %></td>
     <td><a href="https://wa.me/91<%= String(u.phone).replace(/\D/g,'').slice(-10) %>"><%= u.phone||'—' %></a><br><span class="muted"><%= u.email %></span></td>
-    <td><span class="badge <%= u.account_type==='wholesale'?'badge-ok':'badge-muted' %>"><%= u.account_type %></span><% if(u.role==='admin'){ %><br><span class="badge">admin</span><% } %></td>
+    <td><span class="badge badge-muted"><%= u.account_type %></span><% if(u.role==='admin'){ %><br><span class="badge">admin</span><% } %></td>
     <td class="num"><%= u.orders %></td>
     <td class="num"><b><%= money(u.spend||0) %></b></td>
     <td><span class="badge <%= u.status==='active'?'badge-ok':(u.status==='pending'?'badge-warn':'badge-bad') %>"><%= u.status %></span></td>

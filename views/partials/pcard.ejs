@@ -1,37 +1,78 @@
 <article class="pcard">
-  <div class="pcard-img">
-    <% const pImgs = json(p.images, []); %>
-    <% if (pImgs.length > 1) { %>
-      <div class="pcard-carousel" id="pcard-car-<%= p.id %>">
-        <% pImgs.forEach(img => { %>
-          <a href="/p/<%= p.slug %>"><img src="<%= img %>" alt="<%= p.name %>" loading="lazy" width="400" height="400"></a>
-        <% }) %>
-      </div>
-      <button class="pcard-nav prev" aria-label="Previous image" onclick="event.preventDefault(); navPcard(<%= p.id %>, -1)">❮</button>
-      <button class="pcard-nav next" aria-label="Next image" onclick="event.preventDefault(); navPcard(<%= p.id %>, 1)">❯</button>
-    <% } else { %>
-      <a href="/p/<%= p.slug %>"><img src="<%= pImgs[0] || '/static/img/placeholder.svg' %>" alt="<%= p.name %>" loading="lazy" width="400" height="400"></a>
-    <% } %>
-    <div class="pcard-flags">
-      <% if(p.is_new){ %><span class="badge badge-new">New</span><% } %>
-
-      <% if(p.stock<=0){ %><span class="badge badge-muted">Made to order</span><% } %>
+  <div class="pcard-img-wrap">
+    <div class="pcard-badges">
+      <% if(p.is_new){ %><span class="badge hot">Hot</span>
+        <% } else if(p.stock<=0){ %><span class="badge muted">Order</span>
+          <% } else if(p.is_featured){ %><span class="badge sale">Sale</span>
+            <% } %>
     </div>
-    <button class="pcard-fav <%= wishIds.includes(p.id)?'on':'' %>" data-wish="<%= p.id %>" aria-label="Save to wishlist">
-      <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-9.5A4 4 0 0112 8a4 4 0 017 2.5c0 5-7 9.5-7 9.5z" stroke-linejoin="round"/></svg>
-    </button>
+    <div class="pcard-img">
+      <% const pImgs=json(p.images, []); %>
+        <% const fallbackImg=pImgs[0] || '/static/img/catalog/' + p.slug + '.svg' ; %>
+          <% if (pImgs.length> 1) { %>
+            <div class="pcard-carousel" id="pcard-car-<%= p.id %>">
+              <% pImgs.forEach(img=> { %>
+                <a href="/p/<%= p.slug %>"><img src="<%= img %>" alt="<%= p.name %>" loading="lazy" width="400"
+                    height="400" onerror="this.onerror=null;this.src='/static/img/placeholder.svg';"></a>
+                <% }) %>
+            </div>
+            <% } else { %>
+              <a href="/p/<%= p.slug %>"><img src="<%= fallbackImg %>" alt="<%= p.name %>" loading="lazy" width="400"
+                  height="400" onerror="this.onerror=null;this.src='/static/img/placeholder.svg';"></a>
+              <% } %>
+    </div>
+    <div class="pcard-action">
+      <button class="pcard-fav <%= wishIds.includes(p.id)?'on':'' %>" data-wish="<%= p.id %>"
+        aria-label="Save to wishlist">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 20s-7-4.5-7-9.5A4 4 0 0112 8a4 4 0 017 2.5c0 5-7 9.5-7 9.5z" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
   </div>
-  <div class="pcard-body">
-    <span class="pcard-cat"><%= p.cat || 'Accessories' %></span>
-    <h3 class="pcard-title"><a href="/p/<%= p.slug %>"><%- typeof highlightText !== 'undefined' && typeof query !== 'undefined' ? highlightText(p.name, query.q) : p.name %></a></h3>
-    <div class="stars">
-      <%- '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5-Math.round(p.rating)) %><span><%= p.review_count %></span>
+  <div class="pcard-content">
+    <span class="pcard-cat">
+      <%= p.cat || 'Category' %>
+    </span>
+    <h3 class="pcard-title"><a href="/p/<%= p.slug %>"><%- typeof highlightText !=='undefined' && typeof query
+          !=='undefined' ? highlightText(p.name, query.q) : p.name %></a></h3>
+    <div class="pcard-rate">
+      <span class="stars"><%- '★' .repeat(Math.round(p.rating || 5)) + '☆' .repeat(5-Math.round(p.rating || 5))
+          %></span>
+      <span class="count">
+        <%= (p.rating || 5).toFixed(1) %>
+      </span>
     </div>
-    <div class="pcard-meta"><%= p.pack_size || (p.unit + ' pack') %></div>
-
-    <div class="pcard-actions">
-
-      <a href="https://wa.me/<%= S.whatsapp %>?text=Hi,%20we%20would%20like%20to%20enquire%20about%20this%20product:%20<%= encodeURIComponent(SITE_URL + '/p/' + p.slug) %>" target="_blank" class="btn btn-sm btn-ghost btn-block" style="flex:1; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">Enquire</a>
+    <div class="pcard-bottom">
+      <div class="pcard-price">
+        <% if (typeof S !=='undefined' && S.hide_prices !=='1' && p.price) { %>
+          <span class="current">
+            <%= money(p.price) %>
+          </span>
+          <% if(p.mrp && p.mrp> p.price){ %><span class="old">
+              <%= money(p.mrp) %>
+            </span>
+            <% } %>
+              <% } else { %>
+                <span class="pcard-moq" title="Minimum Order Quantity">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  MOQ: <%= p.moq || 1 %>
+                    <%= p.unit || 'pcs' %>
+                </span>
+                <% } %>
+      </div>
+      <form action="/enquiry/add" method="post" style="margin:0;">
+        <input type="hidden" name="id" value="<%= p.id %>">
+        <input type="hidden" name="qty" value="<%= p.moq || 1 %>">
+        <button type="submit" class="btn-add">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14m-7-7h14" stroke-linecap="round" />
+          </svg>
+          Add
+        </button>
+      </form>
     </div>
   </div>
 </article>

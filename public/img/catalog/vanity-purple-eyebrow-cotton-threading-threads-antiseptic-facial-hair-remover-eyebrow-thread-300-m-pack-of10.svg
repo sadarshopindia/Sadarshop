@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Vanity Purple Eyebrow Cotton Threading Threads Antiseptic Facial hair Remover Eyebrow Thread  (300 m, Pack of10)">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF2FA"/><stop offset="1" stop-color="#DCE5F5"/></linearGradient>
+<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#2B3F66" opacity=".13"/></pattern>
+</defs>
+<rect width="600" height="600" fill="url(#bg)"/>
+<rect width="600" height="600" fill="url(#dots)"/>
+<circle cx="300" cy="252" r="162" fill="#fff" opacity=".72"/>
+<g transform="translate(170 122) scale(1.3)" color="#2B3F66"><g stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round">
+    <rect x="62" y="46" width="76" height="12" rx="4" fill="currentColor" opacity=".9"/>
+    <rect x="62" y="142" width="76" height="12" rx="4" fill="currentColor" opacity=".9"/>
+    <path d="M78 58v84M122 58v84"/>
+    <path d="M78 72h44M78 88h44M78 104h44M78 120h44" opacity=".55"/>
+    <path d="M122 80c16 4 24 12 24 22s-8 18-24 22" opacity=".7"/></g></g>
+<g font-family="ui-sans-serif,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" text-anchor="middle" fill="#2B3F66">
+<text x="300" y="468" font-size="23" font-weight="600">Vanity Purple Eyebrow</text>
+<text x="300" y="498" font-size="23" font-weight="600">Cotton Threading Threads</text>
+<text x="300" y="528" font-size="23" font-weight="600">Antiseptic</text>
+<text x="300" y="570" font-size="17" opacity=".62">Eyebrow Thread</text>
+</g>
+<rect x="8" y="8" width="584" height="584" fill="none" stroke="#2B3F66" stroke-opacity=".12" stroke-width="2" rx="14"/>
+</svg>
