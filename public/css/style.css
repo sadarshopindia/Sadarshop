@@ -2910,6 +2910,10 @@ mark {
     margin-right: 0
   }
 
+  .searchbar select {
+    display: none
+  }
+
   .head-phone {
     display: none
   }

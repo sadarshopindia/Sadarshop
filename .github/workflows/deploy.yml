@@ -3,7 +3,7 @@ name: Deploy Sadarshop to Namecheap
 on:
   push:
     branches:
-      - main   # change to "master" if that is your branch name
+      - main
 
 jobs:
   deploy:
@@ -20,6 +20,7 @@ jobs:
           script: |
             cd /home/satnqpja/sadarshop.com
             git pull origin main
-            npm install --omit=dev
+            ~/nodevenv/sadarshop.com/22/bin/npm install --omit=dev
+            mkdir -p tmp
             touch tmp/restart.txt
             echo "✅ Sadarshop deployment complete"
